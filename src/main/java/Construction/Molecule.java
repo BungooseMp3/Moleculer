@@ -1,5 +1,6 @@
 package Construction;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Molecule {
@@ -76,7 +77,7 @@ public class Molecule {
         this.groupList = groupList;
     }
 
-    public Molecule(String startElementID){
+    public Molecule(String startElementID,Point position){
         groupList = new ArrayList<FuncGroup>();
         elementList = new ArrayList<Element>();
         Element startElement = new Element(startElementID); //a new element is made using the specified ID
@@ -88,5 +89,4 @@ public class Molecule {
         }
 
     }
-
 }

@@ -1,15 +1,12 @@
+import Construction.Element;
 import Construction.Molecule;
-import UI.ShapeButton;
+import UI.MoleculeComponent;
 import UI.Workspace;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 
 public class Main {
     public static void main(String[] args) {
-        Molecule mongus = new Molecule("C");
-        int x = 5;
+        Workspace hey = new Workspace();
     }
 }
