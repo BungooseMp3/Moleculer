@@ -77,7 +77,7 @@ public class Molecule {
         this.groupList = groupList;
     }
 
-    public Molecule(String startElementID,Point position){
+    public Molecule(String startElementID){
         groupList = new ArrayList<FuncGroup>();
         elementList = new ArrayList<Element>();
         Element startElement = new Element(startElementID); //a new element is made using the specified ID

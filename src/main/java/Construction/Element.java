@@ -85,11 +85,9 @@ public class Element extends MoleculeComponent {
         int y = (this.getHeight() - (textAscent + textDescent)) / 2 + textAscent;
 
         g2d.drawString(this.getSymbol(),x, y);
+        System.out.println(this.getWidth());
         g2d.drawRect(0,0,this.getWidth(),this.getHeight());
 
-    }
 
-    protected void paintFunction(Graphics2D g2d){
-        g2d.drawRect(0,0,this.getWidth(),this.getHeight());
     }
 }

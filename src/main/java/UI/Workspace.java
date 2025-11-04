@@ -9,18 +9,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class Workspace extends JFrame {
+public class Workspace extends JPanel {
 
     public ArrayList<Element> elements = new ArrayList<Element>();
-    Insets insets;
 
     public Workspace(){
-        this.setSize(500,500);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setVisible(true);
         this.setLayout(null);
-
-        this.getContentPane().addMouseListener(new MouseAdapter() {
+        this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(e.getButton() == MouseEvent.BUTTON1){
