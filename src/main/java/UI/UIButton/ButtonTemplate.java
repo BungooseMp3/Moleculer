@@ -3,6 +3,8 @@ package UI.UIButton;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 abstract class ButtonTemplate extends JButton {
 
@@ -39,6 +41,14 @@ abstract class ButtonTemplate extends JButton {
         this.setButtonColor(this.getButtonColor());
         this.setButtonBorder(this.getButtonBorder());
         this.setVisible(true);
+        this.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ButtonTemplate.this.buttonPressed();
+            }
+        });
     }
+
+    abstract public void buttonPressed();
 
 }
