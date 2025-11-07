@@ -1,4 +1,4 @@
-package UI.UIButton;
+package UI.UIButtons;
 
 import javax.swing.*;
 import javax.swing.border.Border;

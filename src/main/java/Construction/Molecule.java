@@ -1,9 +1,13 @@
 package Construction;
 
+import UI.Workspace;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Molecule {
+
+    private Workspace workspace;
     private ArrayList<Element> elementList;
     private double mr;
     private String name;
@@ -12,6 +16,14 @@ public class Molecule {
     private int[] priorityChain;
     private FuncGroup priorityGroup;
     private ArrayList<FuncGroup> groupList;
+
+    public Workspace getWorkspace() {
+        return workspace;
+    }
+
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
+    }
 
     public ArrayList<Element> getElementList() {
         return elementList;
@@ -77,10 +89,11 @@ public class Molecule {
         this.groupList = groupList;
     }
 
-    public Molecule(String startElementID){
+    public Molecule(String startElementID, Workspace workspace, int x, int y){
+
         groupList = new ArrayList<FuncGroup>();
         elementList = new ArrayList<Element>();
-        Element startElement = new Element(startElementID); //a new element is made using the specified ID
+        Element startElement = new Element(startElementID, workspace,x,y); //a new element is made using the specified ID
         elementList.add(startElement); // the new element is added to the molecule
         mr = startElement.getAr();
 
@@ -88,5 +101,23 @@ public class Molecule {
             groupList.add(new FuncGroup(startElement));
         }
 
+        this.setWorkspace(workspace);
+    }
+
+    public void addNewNode(Element selectedNode, String selectedElementID){
+        if(selectedNode.hasFreeBonds(1)){
+            this.addElement(new Element(selectedElementID,getWorkspace(),selectedNode.getX()+30,selectedNode.getY()+30));
+            Element newElement = this.getLastElement();
+            newElement.joinElements(selectedNode);
+        }
+
+    }
+
+    private void addElement(Element element) {
+        this.getElementList().add(element);
+    }
+
+    private Element getLastElement() {
+        return this.getElementList().getLast();
     }
 }

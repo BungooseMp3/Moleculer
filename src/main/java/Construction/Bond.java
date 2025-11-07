@@ -1,5 +1,7 @@
 package Construction;
 
+import java.util.Objects;
+
 public class Bond {
     private int bondType;
     private Element[] connectedElements;
@@ -20,10 +22,23 @@ public class Bond {
         this.connectedElements = connectedElements;
     }
 
+    public void setConnectedElement(int i, Element element){
+        this.getConnectedElements()[i] = element;
+    }
+
     public Bond(Element startElement, Element endElement, int bondType){
         this.bondType = bondType;
         this.connectedElements = new Element[2];
         this.connectedElements[0] = startElement;
         this.connectedElements[1] = endElement;
+    }
+
+    public Boolean isEmpty(){
+        for (Element each: getConnectedElements()){
+            if (Objects.isNull(each)){
+                return true;
+            }
+        }
+        return false;
     }
 }

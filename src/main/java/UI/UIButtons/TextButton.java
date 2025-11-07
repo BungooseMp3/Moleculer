@@ -1,11 +1,8 @@
-package UI.UIButton;
+package UI.UIButtons;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class TextButton extends ButtonTemplate{
+abstract public class TextButton extends ButtonTemplate{
     private double fontScale;
 
     public double getMaxSize() {
@@ -26,7 +23,7 @@ public class TextButton extends ButtonTemplate{
 
     private double maxSize;
 
-    public TextButton(String text,double fontScale,double maxSize){
+    public void initTextButton(String text,double fontScale,double maxSize){
         this.setFontScale(fontScale);
         this.setMaxSize(maxSize);
         this.setButtonSize(new Dimension(100,100));
@@ -36,7 +33,7 @@ public class TextButton extends ButtonTemplate{
 
     public void initText(String text){
         int fontSize = 80;
-        this.setFont(new Font("Arial", Font.PLAIN,fontSize)); //sets an initial font
+        this.setFont(new Font("Arial", Font.PLAIN,fontSize)); //sets an initial font with arbitrary size
         FontMetrics metrics = getFontMetrics(this.getFont());
         int textWidth = metrics.charsWidth(text.toCharArray(),0,text.length()); // determines the actual width of the text on the button
         fontSize = (int) Math.min(this.getPreferredSize().width*fontScale*((double) fontSize/(double) textWidth ), maxSize); //calculates new width based on container size
@@ -44,8 +41,4 @@ public class TextButton extends ButtonTemplate{
         this.setText(text);
     }
 
-    @Override
-    public void buttonPressed() {
-        System.out.println(this.getFont());
-    }
 }

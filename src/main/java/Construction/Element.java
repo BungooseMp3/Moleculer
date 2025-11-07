@@ -1,6 +1,7 @@
 package Construction;
 
 import UI.MoleculeComponent;
+import UI.Workspace;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -40,7 +41,7 @@ public class Element extends MoleculeComponent {
         this.ar = ar;
     }
 
-    public Element(String symbol){
+    public Element(String symbol, Workspace workspace, int x, int y){
         bonds = new Bond[getBondNum(symbol)]; // sets bonds to the correct size based on element input
         this.symbol = symbol;
         ar = getArVal(symbol);
@@ -48,9 +49,30 @@ public class Element extends MoleculeComponent {
             bonds[i] = new Bond(this, null, 1); // makes a new bond connecting the current element and a null element
         }
 
-        this.setVisible(true);
-        this.initComponent();
+        this.setPos(x,y);
+        setWidth(100);
+        setHeight(100);
+        this.initComponent(workspace);// initialises the component
     }
+
+    public boolean hasFreeBonds(int num){
+        for (Bond eachBond: getBonds()){
+            if (eachBond.isEmpty()){
+                num--;
+            }
+            if (num == 0){
+                break;
+            }
+        }
+
+        if(num == 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
     private double getArVal(String symbol) {
         return ElementReference.atomicMass.get(symbol); //returns the atomic mass of input element
@@ -65,11 +87,17 @@ public class Element extends MoleculeComponent {
     }
 
     public void mouseClick(MouseEvent e){
-        System.out.println(this.getSymbol() + " clicked");
+        getWorkspace().getCurrentTool().onElementClick(e,this); // calls the relevant element clicked function of the current tool
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    public void setPos(int x, int y) {
+        setX(x);
+        setY(y);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) { // handles the drawing of the element
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
@@ -85,9 +113,22 @@ public class Element extends MoleculeComponent {
         int y = (this.getHeight() - (textAscent + textDescent)) / 2 + textAscent;
 
         g2d.drawString(this.getSymbol(),x, y);
-        System.out.println(this.getWidth());
-        g2d.drawRect(0,0,this.getWidth(),this.getHeight());
+    }
 
+    public void joinElements(Element targetNode) {
+        Bond currentBond = this.getFirstFreeBond();
+        currentBond.setConnectedElement(0,this);
+        currentBond.setConnectedElement(1,targetNode);
+        targetNode.getFirstFreeBond().setConnectedElements(currentBond.getConnectedElements());
 
+    }
+
+    private Bond getFirstFreeBond() {
+        for (int i = 0; i < this.getBonds().length; i++) {
+            if(this.getBonds()[i].isEmpty()){
+                return this.getBonds()[i];
+            }
+        }
+        return null;
     }
 }
