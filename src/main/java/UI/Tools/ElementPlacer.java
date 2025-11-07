@@ -31,7 +31,7 @@ public class ElementPlacer extends Tool {
 
     private Molecule findMolWith(Element element) {
         for (int i = 0; i < getWorkspace().getMolecules().size() ; i++) {
-            if(getWorkspace().getMolecules().contains(element)){
+            if(getWorkspace().getMolecules().get(i).getElementList().contains(element)){
                 return getWorkspace().getMolecules().get(i);
             }
         }
