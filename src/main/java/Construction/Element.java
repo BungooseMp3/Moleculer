@@ -9,6 +9,7 @@ import java.awt.geom.Line2D;
 import java.util.Objects;
 
 public class Element extends MoleculeComponent {
+    static int molDistance = 50;
     private Bond[] bonds;
     private String symbol;
     private double ar;
@@ -50,8 +51,8 @@ public class Element extends MoleculeComponent {
         }
 
         this.setPos(x,y);
-        setWidth(100);
-        setHeight(100);
+        setWidth(50);
+        setHeight(50);
         this.initComponent(workspace);// initialises the component
     }
 
@@ -116,19 +117,41 @@ public class Element extends MoleculeComponent {
     }
 
     public void joinElements(Element targetNode) {
-        Bond currentBond = this.getFirstFreeBond();
-        currentBond.setConnectedElement(0,this);
-        currentBond.setConnectedElement(1,targetNode);
-        targetNode.getFirstFreeBond().setConnectedElements(currentBond.getConnectedElements());
+        Bond currentBond = this.getFirstFreeBond(); //finds the first available bond
+        currentBond.setConnectedElement(0,this); //sets the first node in the bond to the element this method is called on
+        currentBond.setConnectedElement(1,targetNode);// sets the other node to the input target node
+        targetNode.getFirstFreeBond().setConnectedElements(currentBond.getConnectedElements()); // updates the target node's bond list so they share a bond
 
     }
 
     private Bond getFirstFreeBond() {
-        for (int i = 0; i < this.getBonds().length; i++) {
+        for (int i = 0; i < this.getBonds().length; i++) { // iterates through the chosen element's bond list to find the first bond with an empty element
             if(this.getBonds()[i].isEmpty()){
                 return this.getBonds()[i];
             }
         }
         return null;
+    }
+
+    private int getFirstFreeBondPos() {
+        for (int i = 0; i < this.getBonds().length; i++) { // iterates through the chosen element's bond list to find the first bond with an empty element
+            if(this.getBonds()[i].isEmpty()){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int[] calcNextElementPos() {
+        int[] adjustmentVector = new int[2];
+        int bondPos = this.getFirstFreeBondPos();
+
+        if (bondPos%2 == 0){
+            adjustmentVector[0] = molDistance;
+        } else {
+            adjustmentVector[1] = 50;
+        }
+
+        return adjustmentVector;
     }
 }
