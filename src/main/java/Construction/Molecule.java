@@ -124,12 +124,8 @@ public class Molecule {
     }
 
     public int[] findOrientation(Element element, int[] elementPos) {
-        if (this.getElementList().indexOf(element )%2 == 1){
-            if (elementPos[0]!=0){
-                elementPos[0] *= -1;
-            } else {
-                elementPos[1] *= -1;
-            }
+        if (this.getElementList().indexOf(element )%2 != 0){
+            elementPos[1] = elementPos[1]*-1;
         }
         return elementPos;
     }

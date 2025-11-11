@@ -144,6 +144,7 @@ public class Element extends MoleculeComponent {
 
     public int[] calcNextElementPos() {
         int bondPos = this.getFirstFreeBondPos();
+        System.out.println(bondPos);
         return switch (bondPos) {
             case 0 -> new int[]{50, -50};
             case 1 -> new int[]{-50, -50};
