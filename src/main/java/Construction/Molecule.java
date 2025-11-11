@@ -4,6 +4,7 @@ import UI.Workspace;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Molecule {
 
@@ -108,6 +109,7 @@ public class Molecule {
         if(selectedNode.hasFreeBonds(1)){
             int[] elementPos = selectedNode.calcNextElementPos();
             elementPos = this.findOrientation(selectedNode,elementPos);
+            System.out.println(Arrays.toString(elementPos));
             this.addElement(new Element(selectedElementID,getWorkspace(),selectedNode.getX()+elementPos[0],selectedNode.getY()+elementPos[1]));
             Element newElement = this.getLastElement();
             newElement.joinElements(selectedNode);
@@ -125,7 +127,9 @@ public class Molecule {
 
     public int[] findOrientation(Element element, int[] elementPos) {
         if (this.getElementList().indexOf(element )%2 != 0){
+            System.out.println("Yay");
             elementPos[1] = elementPos[1]*-1;
+            elementPos[0] = elementPos[0]*-1;
         }
         return elementPos;
     }

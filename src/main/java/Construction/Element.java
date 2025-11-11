@@ -117,10 +117,11 @@ public class Element extends MoleculeComponent {
     }
 
     public void joinElements(Element targetNode) {
-        Bond currentBond = targetNode.getFirstFreeBond(); //finds the first available bond
+        Bond currentBond = targetNode.getFirstFreeBond();//finds the first available bond
+        int bondPos = targetNode.getFirstFreeBondPos();
         currentBond.setConnectedElement(0,this); //sets the first node in the bond to the element this method is called on
         currentBond.setConnectedElement(1,targetNode);// sets the other node to the input target node
-        this.getBonds()[targetNode.posOfBond(currentBond)].setConnectedElements(currentBond.getConnectedElements()); // updates the target node's bond list so they share a bond
+        this.getBonds()[bondPos].setConnectedElements(currentBond.getConnectedElements()); // updates the target node's bond list so they share a bond
 
     }
 
