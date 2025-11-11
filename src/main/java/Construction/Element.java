@@ -143,15 +143,13 @@ public class Element extends MoleculeComponent {
     }
 
     public int[] calcNextElementPos() {
-        int[] adjustmentVector = new int[2];
         int bondPos = this.getFirstFreeBondPos();
-
-        if (bondPos%2 == 0){
-            adjustmentVector[0] = molDistance;
-        } else {
-            adjustmentVector[1] = 50;
-        }
-
-        return adjustmentVector;
+        return switch (bondPos) {
+            case 0 -> new int[]{50, -50};
+            case 1 -> new int[]{-50, -50};
+            case 2 -> new int[]{0, 50};
+            case 3 -> new int[]{0, -50};
+            default -> null;
+        };
     }
 }
