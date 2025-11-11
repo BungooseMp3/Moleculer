@@ -94,7 +94,7 @@ public class Molecule {
 
         groupList = new ArrayList<FuncGroup>();
         elementList = new ArrayList<Element>();
-        Element startElement = new Element(startElementID, workspace,x,y); //a new element is made using the specified ID
+        Element startElement = new Element(startElementID, workspace,x-25,y-25); //a new element is made using the specified ID
         elementList.add(startElement); // the new element is added to the molecule
         mr = startElement.getAr();
 
@@ -126,7 +126,7 @@ public class Molecule {
     }
 
     public int[] findOrientation(Element element, int[] elementPos) {
-        if (this.getElementList().indexOf(element )%2 != 0){
+        if (element.isUp){
             System.out.println("Yay");
             elementPos[1] = elementPos[1]*-1;
             elementPos[0] = elementPos[0]*-1;

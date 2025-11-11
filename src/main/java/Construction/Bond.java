@@ -5,6 +5,8 @@ import java.util.Objects;
 public class Bond {
     private int bondType;
     private Element[] connectedElements;
+    public int[] start;
+    public int[] end;
 
     public int getBondType() {
         return bondType;

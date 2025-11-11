@@ -9,10 +9,11 @@ import java.awt.geom.Line2D;
 import java.util.Objects;
 
 public class Element extends MoleculeComponent {
-    static int molDistance = 50;
+    static int molDistance = 100;
     private Bond[] bonds;
     private String symbol;
     private double ar;
+    public Boolean isUp = true;
 
     public void setAr(double ar) {
         this.ar = ar;
@@ -93,8 +94,8 @@ public class Element extends MoleculeComponent {
 
     @Override
     public void setPos(int x, int y) {
-        setX(x);
-        setY(y);
+        this.setX(x);
+        this.setY(y);
     }
 
     @Override
@@ -113,10 +114,12 @@ public class Element extends MoleculeComponent {
         int x = (this.getWidth() - textWidth) / 2;
         int y = (this.getHeight() - (textAscent + textDescent)) / 2 + textAscent;
 
-        g2d.drawString(this.getSymbol(),x, y);
+        g2d.drawString(this.getSymbol(),x,y);
+
     }
 
     public void joinElements(Element targetNode) {
+        this.isUp = !targetNode.isUp;
         Bond currentBond = targetNode.getFirstFreeBond();//finds the first available bond
         int bondPos = targetNode.getFirstFreeBondPos();
         currentBond.setConnectedElement(0,this); //sets the first node in the bond to the element this method is called on
@@ -147,10 +150,10 @@ public class Element extends MoleculeComponent {
         int bondPos = this.getFirstFreeBondPos();
         System.out.println(bondPos);
         return switch (bondPos) {
-            case 0 -> new int[]{50, -50};
-            case 1 -> new int[]{-50, -50};
-            case 2 -> new int[]{0, 50};
-            case 3 -> new int[]{0, -50};
+            case 0 -> new int[]{molDistance, -molDistance};
+            case 1 -> new int[]{-molDistance, -molDistance};
+            case 2 -> new int[]{0, molDistance};
+            case 3 -> new int[]{0, -molDistance};
             default -> null;
         };
     }
