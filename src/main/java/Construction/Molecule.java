@@ -2,7 +2,6 @@ package Construction;
 
 import UI.Workspace;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -126,7 +125,7 @@ public class Molecule {
     }
 
     public int[] findOrientation(Element element, int[] elementPos) {
-        if (element.isUp){
+        if (!element.isDown){
             System.out.println("Yay");
             elementPos[1] = elementPos[1]*-1;
             elementPos[0] = elementPos[0]*-1;

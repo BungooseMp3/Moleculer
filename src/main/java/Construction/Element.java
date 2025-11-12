@@ -5,7 +5,6 @@ import UI.Workspace;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Line2D;
 import java.util.Objects;
 
 public class Element extends MoleculeComponent {
@@ -13,7 +12,7 @@ public class Element extends MoleculeComponent {
     private Bond[] bonds;
     private String symbol;
     private double ar;
-    public Boolean isUp = true;
+    public Boolean isDown = true;
 
     public void setAr(double ar) {
         this.ar = ar;
@@ -119,13 +118,12 @@ public class Element extends MoleculeComponent {
     }
 
     public void joinElements(Element targetNode) {
-        this.isUp = !targetNode.isUp;
+        this.isDown = !targetNode.isDown;
         Bond currentBond = targetNode.getFirstFreeBond();//finds the first available bond
         int bondPos = targetNode.getFirstFreeBondPos();
         currentBond.setConnectedElement(0,this); //sets the first node in the bond to the element this method is called on
         currentBond.setConnectedElement(1,targetNode);// sets the other node to the input target node
         this.getBonds()[bondPos].setConnectedElements(currentBond.getConnectedElements()); // updates the target node's bond list so they share a bond
-
     }
 
     private Bond getFirstFreeBond() {
