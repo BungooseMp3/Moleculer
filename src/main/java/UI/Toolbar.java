@@ -21,10 +21,12 @@ public class Toolbar extends JPanel {
         this.setWorkspace(workspace);
         this.setLayout(new GridLayout(8,2));
         this.setPreferredSize(new Dimension(100,800));
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 7; i++) {
             this.add(new ElementButton("C",0.75,70));
             this.add(new ElementButton("O",0.75,70));
         }
+        this.add(this.add(new ElementButton("N",0.75,70)));
+        this.add(this.add(new ElementButton("N",0.75,70)));
 
         this.setVisible(true);
     }

@@ -106,9 +106,7 @@ public class Molecule {
 
     public void addNewNode(Element selectedNode, String selectedElementID){
         if(selectedNode.hasFreeBonds(1)){
-            int[] elementPos = selectedNode.calcNextElementPos();
-            elementPos = this.findOrientation(selectedNode,elementPos);
-            System.out.println(Arrays.toString(elementPos));
+            int[] elementPos = selectedNode.calcNextElementPos(selectedNode.getFirstFreeBondPos());
             this.addElement(new Element(selectedElementID,getWorkspace(),selectedNode.getX()+elementPos[0],selectedNode.getY()+elementPos[1]));
             Element newElement = this.getLastElement();
             newElement.joinElements(selectedNode);
@@ -124,13 +122,5 @@ public class Molecule {
         return this.getElementList().getLast();
     }
 
-    public int[] findOrientation(Element element, int[] elementPos) {
-        if (!element.isDown){
-            System.out.println("Yay");
-            elementPos[1] = elementPos[1]*-1;
-            elementPos[0] = elementPos[0]*-1;
-        }
-        return elementPos;
-    }
 
 }
