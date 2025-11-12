@@ -93,7 +93,7 @@ public class Molecule {
 
         groupList = new ArrayList<FuncGroup>();
         elementList = new ArrayList<Element>();
-        Element startElement = new Element(startElementID, workspace,x-25,y-25); //a new element is made using the specified ID
+        Element startElement = new Element(startElementID, workspace,x-25,y-25, 1); //a new element is made using the specified ID
         elementList.add(startElement); // the new element is added to the molecule
         mr = startElement.getAr();
 
@@ -107,7 +107,7 @@ public class Molecule {
     public void addNewNode(Element selectedNode, String selectedElementID){
         if(selectedNode.hasFreeBonds(1)){
             int[] elementPos = selectedNode.calcNextElementPos(selectedNode.getFirstFreeBondPos());
-            this.addElement(new Element(selectedElementID,getWorkspace(),selectedNode.getX()+elementPos[0],selectedNode.getY()+elementPos[1]));
+            this.addElement(new Element(selectedElementID,getWorkspace(),selectedNode.getX()+elementPos[0],selectedNode.getY()+elementPos[1],selectedNode.orientationMult*-1));
             Element newElement = this.getLastElement();
             newElement.joinElements(selectedNode);
         }

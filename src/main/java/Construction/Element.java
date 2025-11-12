@@ -43,12 +43,13 @@ public class Element extends MoleculeComponent {
         this.ar = ar;
     }
 
-    public Element(String symbol, Workspace workspace, int x, int y){
+    public Element(String symbol, Workspace workspace, int x, int y, int orientationMult){
         bonds = new Bond[getBondNum(symbol)];// sets bonds to the correct size based on element input
 
         this.setPos(x,y);
         setWidth(elementSize);
         setHeight(elementSize);
+        this.orientationMult = orientationMult;
         this.initComponent(workspace);// initialises the component
 
         this.symbol = symbol;
@@ -122,7 +123,6 @@ public class Element extends MoleculeComponent {
     }
 
     public void joinElements(Element targetNode) {
-        this.orientationMult = orientationMult*-1;
         Bond currentBond = targetNode.getFirstFreeBond();//finds the first available bond
         int bondPos = targetNode.getFirstFreeBondPos();
         currentBond.setConnectedElement(0,this); //sets the first node in the bond to the element this method is called on
