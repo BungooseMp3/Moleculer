@@ -4,13 +4,15 @@ import UI.MoleculeComponent;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Bond extends MoleculeComponent {
+    public static int bondHeight = 50;
+    public static int bondWidth = 50;
     private int bondType;
     private Element[] connectedElements;
-    public int[] start;
-    public int[] end;
+    public int[] bondPos;
 
     public int getBondType() {
         return bondType;
@@ -42,6 +44,8 @@ public class Bond extends MoleculeComponent {
         bondLocation[0] /= 2;
         bondLocation[1] /= 2;
         this.setPos(startElement.getX()+bondLocation[0],startElement.getY()+bondLocation[1]);
+
+        this.bondPos = calcAngle(bondIndex);
     }
 
     public Boolean isEmpty(){
@@ -56,9 +60,8 @@ public class Bond extends MoleculeComponent {
     protected void paintComponent(Graphics g) { // handles the drawing of the element
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
-        g2d.drawRect(0,0,getWidth(),getHeight());
-
+        System.out.println(Arrays.toString(bondPos));
+        g2d.drawLine(bondPos[0],bondPos[1],bondPos[2],bondPos[3]);
     }
 
     @Override
@@ -76,6 +79,10 @@ public class Bond extends MoleculeComponent {
 
     public int[] calcAngle(int bondIndex){
         return switch (bondIndex){
+            case 0 -> new int[]{0,bondHeight,bondWidth,0};
+            case 1 -> new int[]{0,0,bondWidth,bondHeight};
+            case 2 -> new int[]{bondWidth/2,bondHeight,bondWidth/2,0};
+            case 3 -> new int[]{bondWidth/2,0,bondWidth/2,bondHeight};
             default -> null;
         };
     }

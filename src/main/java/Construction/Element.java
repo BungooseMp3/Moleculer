@@ -117,9 +117,6 @@ public class Element extends MoleculeComponent {
         int y = (this.getHeight() - (textAscent + textDescent)) / 2 + textAscent;
 
         g2d.drawString(this.getSymbol(),x,y);
-        g2d.drawRect(0,0,getWidth(),getHeight());
-        g2d.drawRect(0,0,5,5);
-
     }
 
     public void joinElements(Element targetNode) {
