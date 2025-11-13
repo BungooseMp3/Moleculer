@@ -26,7 +26,7 @@ public class Toolbar extends JPanel {
             this.add(new ElementButton("O",0.75,70));
         }
         this.add(this.add(new ElementButton("N",0.75,70)));
-        this.add(this.add(new ElementButton("N",0.75,70)));
+        this.add(this.add(new ElementButton("H",0.75,70)));
 
         this.setVisible(true);
     }

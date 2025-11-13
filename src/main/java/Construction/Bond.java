@@ -60,13 +60,12 @@ public class Bond extends MoleculeComponent {
     protected void paintComponent(Graphics g) { // handles the drawing of the element
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        System.out.println(Arrays.toString(bondPos));
         g2d.drawLine(bondPos[0],bondPos[1],bondPos[2],bondPos[3]);
     }
 
     @Override
     public void mouseClick(MouseEvent e) {
-
+        System.out.println("Hello");
     }
 
     @Override
