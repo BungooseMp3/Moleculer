@@ -1,6 +1,5 @@
 package UI;
 
-import Construction.Bond;
 import Construction.Element;
 import Construction.Molecule;
 import UI.Tools.Tool;

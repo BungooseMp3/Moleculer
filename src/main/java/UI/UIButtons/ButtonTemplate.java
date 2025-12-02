@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 abstract class ButtonTemplate extends JButton {
 
     private Color buttonColor;
-    private Dimension buttonSize;
+    private Dimension buttonSize = new Dimension(100,100);
     private Border buttonBorder;
 
     public Border getButtonBorder() {

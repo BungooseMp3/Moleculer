@@ -1,16 +1,17 @@
-package UI;
+package UI.LeftBar;
+
+import UI.Workspace;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class ToolBarContainer extends JPanel {
 
-    public ToolBarContainer(Rectangle outerDimensions,Workspace workspace){
+    public ToolBarContainer(Workspace workspace){
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(200,1000));
         this.add(Box.createVerticalGlue());
-        this.add(new Toolbar(workspace));
+        this.add(new Toolbar(workspace,10));
         this.add(Box.createVerticalGlue());
         this.setVisible(true);
     }

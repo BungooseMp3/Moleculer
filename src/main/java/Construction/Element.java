@@ -8,12 +8,11 @@ import java.awt.event.MouseEvent;
 import java.util.Objects;
 
 public class Element extends MoleculeComponent {
-    static int molDistance = 100;
-    static int elementSize = 50;
+    static int elementWidth = 50;
+    static int elementHeight = 50;
     private Bond[] bonds;
     private String symbol;
     private double ar;
-    public int orientationMult;
 
     public void setAr(double ar) {
         this.ar = ar;
@@ -43,20 +42,15 @@ public class Element extends MoleculeComponent {
         this.ar = ar;
     }
 
-    public Element(String symbol, Workspace workspace, int x, int y, int orientationMult){
-        bonds = new Bond[getBondNum(symbol)];// sets bonds to the correct size based on element input
-
-        this.setPos(x,y);
-        setWidth(elementSize);
-        setHeight(elementSize);
-        this.orientationMult = orientationMult;
-        this.initComponent(workspace);// initialises the component
-
+    public Element(String symbol, Workspace workspace){
+        bonds = new Bond[getBondNum(symbol)]; // sets bonds to the correct size based on element input
         this.symbol = symbol;
         ar = getArVal(symbol);
         for (int i=0;i<bonds.length;i++){ // iterates through bonds
-            bonds[i] = new Bond(this, null, 1,i); // makes a new bond connecting the current element and a null element
+            bonds[i] = new Bond(this, null, 1); // makes a new bond connecting the current element and a null element
         }
+
+        this.initComponent(workspace, new Rectangle(0,0, elementWidth,elementHeight));// initialises the component
     }
 
     public boolean hasFreeBonds(int num){
@@ -69,11 +63,7 @@ public class Element extends MoleculeComponent {
             }
         }
 
-        if(num == 0){
-            return true;
-        } else {
-            return false;
-        }
+        return num == 0;
     }
 
 
@@ -95,12 +85,6 @@ public class Element extends MoleculeComponent {
     }
 
     @Override
-    public void setPos(int x, int y) {
-        this.setX(x);
-        this.setY(y);
-    }
-
-    @Override
     protected void paintComponent(Graphics g) { // handles the drawing of the element
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
@@ -116,16 +100,15 @@ public class Element extends MoleculeComponent {
         int x = (this.getWidth() - textWidth) / 2;
         int y = (this.getHeight() - (textAscent + textDescent)) / 2 + textAscent;
 
-        g2d.drawString(this.getSymbol(),x,y);
+        g2d.drawString(this.getSymbol(),x, y);
     }
 
     public void joinElements(Element targetNode) {
-        Bond currentBond = targetNode.getFirstFreeBond();//finds the first available bond
-        int bondPos = targetNode.getFirstFreeBondPos();
+        Bond currentBond = this.getFirstFreeBond(); //finds the first available bond
         currentBond.setConnectedElement(0,this); //sets the first node in the bond to the element this method is called on
         currentBond.setConnectedElement(1,targetNode);// sets the other node to the input target node
-        this.getBonds()[bondPos].setConnectedElements(currentBond.getConnectedElements()); // updates the target node's bond list so they share a bond
-        currentBond.initComponent(this.getWorkspace());
+        targetNode.getFirstFreeBond().setConnectedElements(currentBond.getConnectedElements()); // updates the target node's bond list so they share a bond
+
     }
 
     private Bond getFirstFreeBond() {
@@ -137,7 +120,11 @@ public class Element extends MoleculeComponent {
         return null;
     }
 
-    int getFirstFreeBondPos() {
+    public Point calcNextPos(){
+        return new Point();
+    }
+
+    private int getFirstFreeBondPos() {
         for (int i = 0; i < this.getBonds().length; i++) { // iterates through the chosen element's bond list to find the first bond with an empty element
             if(this.getBonds()[i].isEmpty()){
                 return i;
@@ -146,23 +133,4 @@ public class Element extends MoleculeComponent {
         return -1;
     }
 
-    public int[] calcNextElementPos(int bondPos) {
-        System.out.println(bondPos);
-        return switch (bondPos) {
-            case 0 -> new int[]{molDistance*orientationMult, -molDistance*orientationMult};
-            case 1 -> new int[]{-molDistance*orientationMult, -molDistance*orientationMult};
-            case 2 -> new int[]{0, molDistance*orientationMult};
-            case 3 -> new int[]{0, -molDistance*orientationMult};
-            default -> null;
-        };
-    }
-
-    public int posOfBond(Bond bond){
-        for (int i = 0; i < this.getBonds().length; i++) {
-            if (this.getBonds()[i]==bond){
-                return i;
-            }
-        }
-        return -1;
-    }
 }
