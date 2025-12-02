@@ -1,8 +1,20 @@
 package UI.UIButtons;
 
+import UI.Workspace;
+
 import java.awt.*;
 
 abstract public class TextButton extends ButtonTemplate{
+    public Workspace getWorkspace() {
+        return workspace;
+    }
+
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
+    }
+
+    private Workspace workspace;
+
     private double fontScale;
 
     public double getMaxSize() {
@@ -23,7 +35,8 @@ abstract public class TextButton extends ButtonTemplate{
 
     private double maxSize;
 
-    public void initTextButton(String text,double fontScale,double maxSize){
+    public void initTextButton(String text,double fontScale,double maxSize,Workspace workspace){
+        this.setWorkspace(workspace);
         this.setFontScale(fontScale);
         this.setMaxSize(maxSize);
         this.setButtonSize(new Dimension(100,100));
