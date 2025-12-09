@@ -24,4 +24,5 @@ public abstract class GridTemplate extends RoundedPanel {
         this.setPreferredSize(dimensions);
         this.setBackground(color);
     }
+
 }
