@@ -1,13 +1,12 @@
 package UI.LeftBar;
 
 import UI.GridTemplate;
-import UI.RoundedPanel;
 import UI.UIButtons.BondButton;
 import UI.UIButtons.ElementButton;
-import UI.UIButtons.HalogenButton;
+import UI.UIButtons.Halogens.HalogenButton;
+import UI.UIButtons.Halogens.HalogenMenu;
 import UI.Workspace;
 
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class Toolbar extends GridTemplate {
@@ -28,7 +27,7 @@ public class Toolbar extends GridTemplate {
         this.add(new BondButton(2));
         this.add(new BondButton(3));
         this.add(new ElementButton("C",0.75,70,workspace));
-        this.add(new HalogenButton(workspace));
+        this.add(new HalogenMenu(workspace));
         this.add(new ElementButton("H",0.75,70,workspace));
         this.add(new ElementButton("O",0.75,70,workspace));
         this.add(new ElementButton("N",0.75,70,workspace));
