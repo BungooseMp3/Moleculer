@@ -58,10 +58,8 @@ public class BondButton extends ButtonTemplate {
     }
 
     @Override
-    public void buttonPressed() {
-        Toolbar toolbar = (Toolbar) this.getParent();
-        toolbar.getWorkspace().setCurrentTool(new BondPlacer(toolbar.getWorkspace(),this.getBondType()));
-        System.out.println(this.endX);
+    public void buttonLeftClicked() {
+        getWorkspace().setCurrentTool(new BondPlacer(getWorkspace(),this.getBondType()));
     }
 
     @Override

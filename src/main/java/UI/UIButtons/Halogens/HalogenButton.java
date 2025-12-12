@@ -32,7 +32,7 @@ public class HalogenButton extends TextButton {
     }
 
     @Override
-    public void buttonPressed() {
+    public void buttonLeftClicked() {
         this.getWorkspace().setCurrentTool(new ElementPlacer(this.getText(), this.getWorkspace()));
         card.show(menu,"grid");
     }

@@ -1,13 +1,24 @@
 package UI.UIButtons;
 
+import UI.Workspace;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-abstract class ButtonTemplate extends JButton {
+public abstract class ButtonTemplate extends JButton {
 
+    public Workspace getWorkspace() {
+        return workspace;
+    }
+
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
+    }
+
+    private Workspace workspace;
     private Color buttonColor;
     private Dimension buttonSize = new Dimension(100,100);
     private Border buttonBorder;
@@ -44,11 +55,11 @@ abstract class ButtonTemplate extends JButton {
         this.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ButtonTemplate.this.buttonPressed();
+                ButtonTemplate.this.buttonLeftClicked();
             }
         });
     }
 
-    abstract public void buttonPressed();
+    abstract public void buttonLeftClicked();
 
 }

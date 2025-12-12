@@ -5,15 +5,6 @@ import UI.Workspace;
 import java.awt.*;
 
 abstract public class TextButton extends ButtonTemplate{
-    public Workspace getWorkspace() {
-        return workspace;
-    }
-
-    public void setWorkspace(Workspace workspace) {
-        this.workspace = workspace;
-    }
-
-    private Workspace workspace;
 
     private double fontScale;
 

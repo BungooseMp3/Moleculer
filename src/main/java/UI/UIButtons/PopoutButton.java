@@ -20,7 +20,7 @@ public class PopoutButton extends ButtonTemplate{
     }
 
     @Override
-    public void buttonPressed() {
+    public void buttonLeftClicked() {
         if(visible){
             card.show(sidebar,"hidden");
         } else{
