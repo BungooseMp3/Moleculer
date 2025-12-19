@@ -1,6 +1,5 @@
 package UI.Tools;
 import Construction.Element;
-import Construction.Molecule;
 import UI.Workspace;
 
 import java.awt.event.MouseEvent;
@@ -24,23 +23,17 @@ public class ElementPlacer extends Tool {
 
     @Override
     public void onElementClick(MouseEvent e, Element element) {
-        Molecule currentMol = findMolWith(element);
-        currentMol.addNewNode(element,this.getElementSymbol());
-        getWorkspace().repaint();
-    }
-
-    private Molecule findMolWith(Element element) {
-        for (int i = 0; i < getWorkspace().getMolecules().size() ; i++) {
-            if(getWorkspace().getMolecules().get(i).getElementList().contains(element)){
-                return getWorkspace().getMolecules().get(i);
-            }
+        try {
+            element.getMolecule().addNewNode(element,this.elementSymbol,element.calcNextPos());
+        } catch (Exception ex) {
+            System.out.println("no free spaces");
         }
-        return null;
+        element.getWorkspace().repaint();
     }
 
     @Override
     public void onEmptyClick(MouseEvent e) {
-        getWorkspace().addNewMolecule(getElementSymbol(),e);
+        getWorkspace().addNewMolecule(getElementSymbol(),e.getX(),e.getY());
     }
 
     @Override

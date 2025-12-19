@@ -9,7 +9,6 @@ public class MainWindow extends JFrame {
     public MainWindow(){
         Workspace workspace = new Workspace();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
         this.setLayout(new BorderLayout());
         this.getContentPane().add(new LeftPanel(workspace),BorderLayout.WEST);
         this.getContentPane().add(new BottomBar(),BorderLayout.SOUTH);

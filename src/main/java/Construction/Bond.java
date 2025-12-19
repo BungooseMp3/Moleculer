@@ -34,6 +34,9 @@ public class Bond {
         this.connectedElements[1] = endElement;
     }
 
+    /**
+     *returns true if bond is empty (contains null elements)
+     */
     public Boolean isEmpty(){
         for (Element each: getConnectedElements()){
             if (Objects.isNull(each)){

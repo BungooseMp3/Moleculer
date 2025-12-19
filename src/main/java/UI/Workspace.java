@@ -32,8 +32,8 @@ public class Workspace extends JPanel {
 
     private Tool currentTool;
 
-    public void addNewMolecule(String symbol, MouseEvent e){
-        this.getMolecules().add(new Molecule(symbol,this, e.getX(), e.getY()));//adds a new molecule with start element indicated by the symbol
+    public void addNewMolecule(String symbol, int x, int y){
+        this.getMolecules().add(new Molecule(symbol,this, new Point(x-25,y-25)));//adds a new molecule with start element indicated by the symbol
     }
 
     public Workspace(){

@@ -89,12 +89,12 @@ public class Molecule {
         this.groupList = groupList;
     }
 
-    public Molecule(String startElementID, Workspace workspace, int x, int y){
+    public Molecule(String startElementID, Workspace workspace, Point pos){
 
         groupList = new ArrayList<FuncGroup>();
         elementList = new ArrayList<Element>();
-        Element startElement = new Element(startElementID, workspace);
-        startElement.setLocation(x,y);//a new element is made using the specified ID
+        Element startElement = new Element(startElementID, workspace, pos,1,this);
+        startElement.setLocation(pos);//a new element is made using the specified ID
         elementList.add(startElement); // the new element is added to the molecule
         mr = startElement.getAr();
 
@@ -105,13 +105,17 @@ public class Molecule {
         this.setWorkspace(workspace);
     }
 
-    public void addNewNode(Element selectedNode, String selectedElementID){
-        if(selectedNode.hasFreeBonds(1)){
-            this.addElement(new Element(selectedElementID,getWorkspace()));
-            Element newElement = this.getLastElement();
-            newElement.joinElements(selectedNode);
-        }
+    public void addNewNode(Element selectedNode, String selectedElementID, Point pos){
+        try{
+            if(selectedNode.hasFreeBonds(1)){
+                this.addElement(new Element(selectedElementID,getWorkspace(),pos,selectedNode.getOrientation()*(-1),this));
+                Element newElement = this.getLastElement();
+                newElement.joinElements(selectedNode);
 
+            }
+        } catch (Exception e) {
+            System.out.println("Nuh uh");
+        }
     }
 
     public void addElement(Element element) {
@@ -120,14 +124,6 @@ public class Molecule {
 
     public Element getLastElement() {
         return this.getElementList().getLast();
-    }
-
-    public int findOrientation(Element element) {
-        if (this.getElementList().indexOf(element )%2 == 0){
-            return 1;
-        } else {
-            return -1;
-        }
     }
 
 }

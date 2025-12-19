@@ -1,11 +1,22 @@
 package UI;
 
+import Construction.Molecule;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public abstract class MoleculeComponent extends JComponent {
+    public Molecule getMolecule() {
+        return molecule;
+    }
+
+    public void setMolecule(Molecule molecule) {
+        this.molecule = molecule;
+    }
+
+    private Molecule molecule;
 
     public Workspace getWorkspace() {
         return workspace;
@@ -17,8 +28,9 @@ public abstract class MoleculeComponent extends JComponent {
 
     private Workspace workspace;
 
-    public void initComponent(Workspace workspace, Rectangle bounds){
+    public void initComponent(Workspace workspace, Rectangle bounds, Molecule molecule){
         setWorkspace(workspace);
+        this.setMolecule(molecule);
         this.setBounds(bounds);
         workspace.add(this);
         this.setVisible(true);

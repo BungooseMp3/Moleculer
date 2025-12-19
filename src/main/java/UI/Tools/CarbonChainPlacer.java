@@ -16,16 +16,25 @@ public class CarbonChainPlacer extends Tool {
 
     @Override
     public void onElementClick(MouseEvent e, Element element) {
-
+        placeCarbonChain(element);
     }
 
     @Override
     public void onEmptyClick(MouseEvent e) {
-        System.out.println("Yay");
+        this.getWorkspace().addNewMolecule("C",e.getX(),e.getY());
+        placeCarbonChain(this.getWorkspace().getMolecules().getLast().getLastElement());
     }
 
     @Override
     public void onBondClick(MouseEvent e) {
 
+    }
+
+    public void placeCarbonChain(Element startElement) {
+        for (int i = 0; i < chainLength; i++) {
+            startElement.getMolecule().addNewNode(startElement,"C",startElement.calcNextPos());
+            startElement = startElement.getMolecule().getLastElement();
+        }
+        this.getWorkspace().repaint();
     }
 }
