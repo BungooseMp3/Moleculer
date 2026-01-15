@@ -1,5 +1,6 @@
 package UI.Tools;
 
+import Construction.Bond;
 import Construction.Element;
 import UI.Workspace;
 
@@ -19,5 +20,5 @@ public abstract class Tool {
 
     abstract public void onElementClick(MouseEvent e, Element element);
     abstract public void onEmptyClick(MouseEvent e);
-    abstract public void onBondClick(MouseEvent e);
+    abstract public void onBondClick(MouseEvent e, Bond bond);
 }

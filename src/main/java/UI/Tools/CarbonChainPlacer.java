@@ -1,5 +1,6 @@
 package UI.Tools;
 
+import Construction.Bond;
 import Construction.Element;
 import UI.UIButtons.TextButton;
 import UI.Workspace;
@@ -26,7 +27,7 @@ public class CarbonChainPlacer extends Tool {
     }
 
     @Override
-    public void onBondClick(MouseEvent e) {
+    public void onBondClick(MouseEvent e, Bond bond) {
 
     }
 

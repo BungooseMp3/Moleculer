@@ -37,6 +37,7 @@ public class NumberSelector extends JSpinner {
                 button.updateText(((Integer)number).toString());
             }
         });
+
         NumberEditor editor = (NumberEditor) this.getEditor();
         JFormattedTextField textfield = editor.getTextField();
         NumberFormatter formatter = (NumberFormatter) textfield.getFormatter();

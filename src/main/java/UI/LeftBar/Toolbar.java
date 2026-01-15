@@ -27,9 +27,9 @@ public class Toolbar extends GridTemplate {
     public Toolbar (Workspace workspace, int radius){
         this.initGrid(8,2, new Dimension(200,800),radius,new Color(190,10,10),workspace);
 
-        add(new BondButton(1));
-        this.add(new BondButton(2));
-        this.add(new BondButton(3));
+        add(new BondButton(1,workspace));
+        this.add(new BondButton(2, workspace));
+        this.add(new BondButton(3, workspace));
         this.add(new SelectionButtonWrapper(new CarbonChainButton(workspace)));
         this.add(new ElementButton("H",0.75,70,workspace));
         this.add(new ElementButton("O",0.75,70,workspace));

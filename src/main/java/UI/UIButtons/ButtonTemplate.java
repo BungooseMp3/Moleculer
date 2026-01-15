@@ -47,7 +47,7 @@ public abstract class ButtonTemplate extends JButton {
         this.buttonColor = buttonColor;
     }
 
-    public void initButton(){
+    public void initButton() {
         this.setPreferredSize(this.getButtonSize());
         this.setButtonColor(this.getButtonColor());
         this.setButtonBorder(this.getButtonBorder());

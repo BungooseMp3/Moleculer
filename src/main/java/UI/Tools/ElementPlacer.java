@@ -1,4 +1,5 @@
 package UI.Tools;
+import Construction.Bond;
 import Construction.Element;
 import UI.Workspace;
 
@@ -23,9 +24,9 @@ public class ElementPlacer extends Tool {
 
     @Override
     public void onElementClick(MouseEvent e, Element element) {
-        try {
+        if (element.hasFreeBonds(1)){
             element.getMolecule().addNewNode(element,this.elementSymbol,element.calcNextPos());
-        } catch (Exception ex) {
+        } else {
             System.out.println("no free spaces");
         }
         element.getWorkspace().repaint();
@@ -37,7 +38,7 @@ public class ElementPlacer extends Tool {
     }
 
     @Override
-    public void onBondClick(MouseEvent e) {
+    public void onBondClick(MouseEvent e,  Bond bond) {
 
     }
 }

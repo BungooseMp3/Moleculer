@@ -110,7 +110,7 @@ public class Molecule {
             if(selectedNode.hasFreeBonds(1)){
                 this.addElement(new Element(selectedElementID,getWorkspace(),pos,selectedNode.getOrientation()*(-1),this));
                 Element newElement = this.getLastElement();
-                newElement.joinElements(selectedNode);
+                newElement.joinElements(selectedNode,1);
 
             }
         } catch (Exception e) {
@@ -126,4 +126,13 @@ public class Molecule {
         return this.getElementList().getLast();
     }
 
+    public void joinMolecules(Molecule molecule) {
+        this.getElementList().addAll(molecule.getElementList());
+        for (int i = 0; i < molecule.getElementList().size(); i++) {
+            molecule.getElementList().get(i).setMolecule(this);
+        }
+
+        molecule.getWorkspace().getMolecules().remove(molecule);
+        molecule = null;
+    }
 }

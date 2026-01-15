@@ -2,6 +2,8 @@ package UI.UIButtons;
 
 import UI.LeftBar.Toolbar;
 import UI.Tools.BondPlacer;
+import UI.Workspace;
+
 import java.awt.*;
 
 public class BondButton extends ButtonTemplate {
@@ -34,9 +36,10 @@ public class BondButton extends ButtonTemplate {
     public int startX;
     public int endX;
 
-    public BondButton(int bondType){
+    public BondButton(int bondType, Workspace workspace){
         this.bondType = bondType;
         this.calcButtonGraphic();
+        this.setWorkspace(workspace);
         this.initButton();
     }
 

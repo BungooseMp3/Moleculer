@@ -38,6 +38,7 @@ public class Workspace extends JPanel {
 
     public Workspace(){
         this.setLayout(null);
+        this.setBackground(new Color(255,255,255));
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

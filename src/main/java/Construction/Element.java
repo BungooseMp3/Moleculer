@@ -6,11 +6,12 @@ import UI.Workspace;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Element extends MoleculeComponent {
-    static int elementWidth = 50;
-    static int elementHeight = 50;
+    static int elementWidth = 60;
+    static int elementHeight = 60;
     private Bond[] bonds;
     private String symbol;
     private double ar;
@@ -22,14 +23,14 @@ public class Element extends MoleculeComponent {
         this.symbol = symbol;
         this.orientation = orientation;
         ar = getArVal(symbol);
-        for (int i=0;i<bonds.length;i++){ // iterates through bonds
-            bonds[i] = new Bond(this, null, 1); // makes a new bond connecting the current element and a null element
-        }
         this.initComponent(workspace, new Rectangle(pos.x,pos.y, elementWidth,elementHeight),molecule);// initialises the component
-
         center = this.getLocation();
         center.x+=elementWidth/2;
         center.y+=elementHeight/2;
+
+        for (int i=0;i<bonds.length;i++){ // iterates through bonds
+            bonds[i] = new Bond(this, null, 1,workspace,getMolecule()); // makes a new bond connecting the current element and a null element
+        }
     }
 
     public int getOrientation() {
@@ -130,30 +131,78 @@ public class Element extends MoleculeComponent {
     protected void paintComponent(Graphics g) { // handles the drawing of the element
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        long fontSize = Math.round(this.getHeight()/1.1);
-        g2d.setFont(new Font("Arial",Font.PLAIN, (int) fontSize ));
+        if(getSymbol().equals("C")){
 
-        FontMetrics fm = g2d.getFontMetrics();
-        int textWidth = fm.stringWidth(this.getSymbol());
-        int textAscent = fm.getAscent();
-        int textDescent = fm.getDescent();
+            g2d.setColor(Color.black);
+            g2d.fillOval(elementWidth/2-5,elementHeight/2-5,10,10);
 
-        int x = (this.getWidth() - textWidth) / 2;
-        int y = (this.getHeight() - (textAscent + textDescent)) / 2 + textAscent;
+        } else{
 
-        g2d.drawString(this.getSymbol(),x, y);
+            String text = calcSymbol(getSymbol());
+
+            g2d.setColor(new Color(255,255,255));
+            g2d.fillRoundRect(0,0,(int)(elementWidth*0.95),(int)(elementHeight*0.95),30,50);
+            g2d.setColor(new Color(0,0,0));
+            long fontSize = Math.round(this.getHeight()/1.55);
+            g2d.setFont(new Font("Arial",Font.PLAIN, (int) fontSize ));
+
+            FontMetrics fm = g2d.getFontMetrics();
+            int textWidth = fm.stringWidth(text);
+            int textAscent = fm.getAscent();
+            int textDescent = fm.getDescent();
+
+            int x = (this.getWidth() - textWidth) / 2;
+            int y = (this.getHeight() - (textAscent + textDescent)) / 2 + textAscent;
+
+            g2d.drawString(text,x, y);
+
+            if(text == "NH"&&this.hasFreeBonds(2)){
+                g2d.setFont(new Font("Arial",Font.PLAIN, (int) (fontSize*0.4) ));
+                g2d.drawString("2",(int)(elementWidth*0.85), (int)(y+elementWidth*0.2));
+            }
+        }
+
+    }
+
+    public void makeBond(Element element2, int bondType){
+
+        this.updateBonds(element2,bondType);
+
+        for (int i = 0; i < bondType; i++) {
+            this.joinElements(element2,bondType);
+        }
     }
 
     /**
      * edits a bond of each element to contain both <code>this</code> and the <code>targetNode</code>
      * @param targetNode the node that <code>this</code> will be joined to
      */
-    public void joinElements(Element targetNode) {
-        Bond currentBond = this.getFirstFreeBond(); //finds the first available bond
+
+    public void joinElements(Element targetNode,int bondType)
+    {
+        Bond currentBond = this.getFirstFreeBond();//finds the first available bond
+        currentBond.setBondType(bondType);
         currentBond.setConnectedElement(0,this); //sets the first node in the bond to the element this method is called on
         currentBond.setConnectedElement(1,targetNode);// sets the other node to the input target node
         targetNode.getFirstFreeBond().setConnectedElements(currentBond.getConnectedElements()); // updates the target node's bond list so they share a bond
+
+        if(targetNode.getMolecule()!=this.getMolecule()){
+            this.getMolecule().joinMolecules(targetNode.getMolecule());
+        }
+
+        if (!currentBond.isVisible()){
+            currentBond.initComponent(getWorkspace(),currentBond.calcBounds(),getMolecule());
+        }
+
+        currentBond.getConnectedElements()[0].repaint();
+        currentBond.getConnectedElements()[1].repaint();
+
+        for(Element child : this.getMolecule().getElementList()){
+            System.out.println(child.getSymbol());
+        }
+        System.out.println("\n");
 
     }
 
@@ -197,6 +246,27 @@ public class Element extends MoleculeComponent {
             }
         }
         return -1;
+    }
+
+    public String calcSymbol(String symbol) {
+
+        if (symbol.equals("O")&&this.hasFreeBonds(1)) {
+            symbol = "OH";
+        } else if (symbol.equals("N")&&this.hasFreeBonds(1)) {
+            symbol = "NH";
+        }
+
+        return symbol;
+    }
+
+    public void updateBonds(Element element2, int bondtype){
+        for (int i = 0; i < this.getBonds().length; i++) {
+            if (Arrays.asList(this.getBonds()[i].getConnectedElements()).contains(this) && Arrays.asList(this.getBonds()[i].getConnectedElements()).contains(element2)) {
+                Bond currentBond =  this.getBonds()[i];
+                currentBond.setBondType(currentBond.getBondType()+bondtype);
+                currentBond.repaint();
+            }
+        }
     }
 
 }
