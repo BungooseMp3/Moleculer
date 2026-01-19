@@ -197,7 +197,7 @@ public class Element extends MoleculeComponent {
         currentBond.setBondType(1);
         currentBond.setConnectedElement(0,this); //sets the first node in the bond to the element this method is called on
         currentBond.setConnectedElement(1,targetNode);// sets the other node to the input target node
-        targetNode.getFirstFreeBond().setConnectedElements(currentBond.getConnectedElements()); // updates the target node's bond list so they share a bond
+        targetNode.getBonds()[getFirstFreeBondPos()] = currentBond; // updates the target node's bond list so they share a bond
 
         if(targetNode.getMolecule()!=this.getMolecule()){
             this.getMolecule().joinMolecules(targetNode.getMolecule());
@@ -210,6 +210,15 @@ public class Element extends MoleculeComponent {
         currentBond.getConnectedElements()[0].repaint();
         currentBond.getConnectedElements()[1].repaint();
 
+    }
+
+    private int getFirstFreeBondPos() {
+        for (int i = 0; i < this.getBonds().length; i++) { // iterates through the chosen element's bond list to find the first bond with an empty element
+            if(this.getBonds()[i].isEmpty()){
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
