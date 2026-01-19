@@ -6,6 +6,7 @@ import UI.Workspace;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -133,9 +134,17 @@ public class Element extends MoleculeComponent {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        Color color = new Color(0,0,0);
+
+        if(this.getMolecule().findGroupWith(this)!=null){
+            int num = this.getMolecule().getGroupList().indexOf(getMolecule().findGroupWith(this))+1;
+            color = ElementReference.findColor(num);
+        }
+
+
         if(getSymbol().equals("C")){
 
-            g2d.setColor(Color.black);
+            g2d.setColor(color);
             g2d.fillOval(elementWidth/2-5,elementHeight/2-5,10,10);
 
         } else{
@@ -144,7 +153,7 @@ public class Element extends MoleculeComponent {
 
             g2d.setColor(new Color(255,255,255));
             g2d.fillRoundRect(0,0,(int)(elementWidth*0.95),(int)(elementHeight*0.95),30,50);
-            g2d.setColor(new Color(0,0,0));
+            g2d.setColor(color);
             long fontSize = Math.round(this.getHeight()/1.55);
             g2d.setFont(new Font("Arial",Font.PLAIN, (int) fontSize ));
 
@@ -167,11 +176,13 @@ public class Element extends MoleculeComponent {
     }
 
     public void makeBond(Element element2, int bondType){
-
-        this.updateBonds(element2,bondType);
-
-        for (int i = 0; i < bondType; i++) {
-            this.joinElements(element2,bondType);
+        if(this.hasFreeBonds(bondType)&&element2.hasFreeBonds(bondType)){
+            groupUpdate(new Element[]{this,element2});
+            for (int i = 0; i < bondType; i++) {
+                this.joinElements(element2,bondType);
+            }
+            this.updateBonds(element2);
+            getWorkspace().repaint();
         }
     }
 
@@ -180,10 +191,10 @@ public class Element extends MoleculeComponent {
      * @param targetNode the node that <code>this</code> will be joined to
      */
 
-    public void joinElements(Element targetNode,int bondType)
-    {
+    public void joinElements(Element targetNode,int bondType) {
+
         Bond currentBond = this.getFirstFreeBond();//finds the first available bond
-        currentBond.setBondType(bondType);
+        currentBond.setBondType(1);
         currentBond.setConnectedElement(0,this); //sets the first node in the bond to the element this method is called on
         currentBond.setConnectedElement(1,targetNode);// sets the other node to the input target node
         targetNode.getFirstFreeBond().setConnectedElements(currentBond.getConnectedElements()); // updates the target node's bond list so they share a bond
@@ -198,11 +209,6 @@ public class Element extends MoleculeComponent {
 
         currentBond.getConnectedElements()[0].repaint();
         currentBond.getConnectedElements()[1].repaint();
-
-        for(Element child : this.getMolecule().getElementList()){
-            System.out.println(child.getSymbol());
-        }
-        System.out.println("\n");
 
     }
 
@@ -239,15 +245,6 @@ public class Element extends MoleculeComponent {
         return null;
     }
 
-    private int getFirstFreeBondPos() {
-        for (int i = 0; i < this.getBonds().length; i++) { // iterates through the chosen element's bond list to find the first bond with an empty element
-            if(this.getBonds()[i].isEmpty()){
-                return i;
-            }
-        }
-        return -1;
-    }
-
     public String calcSymbol(String symbol) {
 
         if (symbol.equals("O")&&this.hasFreeBonds(1)) {
@@ -259,13 +256,64 @@ public class Element extends MoleculeComponent {
         return symbol;
     }
 
-    public void updateBonds(Element element2, int bondtype){
+    public void updateBonds(Element element2){
+        ArrayList<Bond> bonds = new ArrayList<Bond>();
+
         for (int i = 0; i < this.getBonds().length; i++) {
             if (Arrays.asList(this.getBonds()[i].getConnectedElements()).contains(this) && Arrays.asList(this.getBonds()[i].getConnectedElements()).contains(element2)) {
-                Bond currentBond =  this.getBonds()[i];
-                currentBond.setBondType(currentBond.getBondType()+bondtype);
-                currentBond.repaint();
+                bonds.add(this.getBonds()[i]);
             }
+        }
+
+        if (bonds.size()>1){
+            for(Bond bond: bonds){
+                bond.setBondType(bonds.size());
+                bond.repaint();
+            }
+        }
+
+    }
+
+    //FIX DOUBLE BONDS ON SAME BOND ADDITION
+
+    public static void groupUpdate(Element[] elements){
+        /*if(this.isElement("C")){
+            if(!newElement.isElement("C")){
+                FuncGroup newGroup = new FuncGroup(newElement);
+                newGroup.addAttachedCarbon(this);
+                this.getMolecule().addFuncGroup(newGroup);
+            }
+        } else {
+            FuncGroup currentGroup = this.getMolecule().findGroupWith(this);
+            if(newElement.isElement("C")){
+                currentGroup.addAttachedCarbon(newElement);
+            } else {
+                currentGroup.addContainedElement(this);
+            }
+        }*/
+
+        if(!(elements[0].isElement("C") && elements[1].isElement("C"))){
+            for (Element currentElement : elements) {
+                FuncGroup group = currentElement.getMolecule().findGroupWith(currentElement);
+                if (group == null) {
+                    group = new FuncGroup(currentElement);
+                    currentElement.getMolecule().addFuncGroup(group);
+                }
+            }
+            elements[0].mergeGroups(elements[1]);
+        }
+
+    }
+
+    private void mergeGroups(Element element) {
+        FuncGroup group1 =  this.getMolecule().findGroupWith(this);
+        FuncGroup group2 =  element.getMolecule().findGroupWith(element);
+        if(!group1.equals(group2)){
+            group1.getContainedElements().addAll(group2.getContainedElements());
+            group1.getAttachedCarbons().addAll(group2.getAttachedCarbons());
+
+            element.getMolecule().getGroupList().remove(group2);
+            group2 = null;
         }
     }
 

@@ -3,8 +3,8 @@ package Construction;
 import java.util.ArrayList;
 
 public class FuncGroup {
-    private ArrayList<Element> attachedCarbons;
-    private ArrayList<Element> containedElements;
+    private ArrayList<Element> attachedCarbons = new ArrayList<Element>();
+    private ArrayList<Element> containedElements = new ArrayList<Element>();
     private String groupName;
 
     public ArrayList<Element> getAttachedCarbons() {
@@ -32,8 +32,27 @@ public class FuncGroup {
     }
 
     public FuncGroup(Element initialElement){
-        ArrayList<Element> attachedCarbonList = new ArrayList<Element>();
-        ArrayList<Element> containedElementList = new ArrayList<Element>();
+        addElement(initialElement);
+    }
+
+    private static void extracted(Element initialElement, ArrayList<Element> containedElementList) {
         containedElementList.add(initialElement);
+    }
+
+    public void addElement(Element element){
+        if(element.isElement("C")){
+            addAttachedCarbon(element);
+        } else {
+            addContainedElement(element);
+        }
+        element.repaint();
+    }
+
+    public void addAttachedCarbon(Element element) {
+        attachedCarbons.add(element);
+    }
+
+    public void addContainedElement(Element element) {
+        containedElements.add(element);
     }
 }

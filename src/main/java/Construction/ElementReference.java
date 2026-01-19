@@ -1,4 +1,5 @@
 package Construction;
+import java.awt.*;
 import java.util.Map;
 
 public class ElementReference {
@@ -23,4 +24,22 @@ public class ElementReference {
             "Br",1.0,
             "I",1.0
     );
+
+    public static Color findColor(int id){
+
+        Color[] list = new Color[]{
+                Color.BLUE,
+                Color.GREEN,
+                Color.RED,
+                Color.YELLOW,
+                Color.CYAN,
+                Color.MAGENTA,
+                Color.ORANGE,
+                Color.PINK,
+                Color.GRAY,
+        };
+
+        return list[id];
+    }
+
 }

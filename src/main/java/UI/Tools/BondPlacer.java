@@ -2,6 +2,7 @@ package UI.Tools;
 
 import Construction.Bond;
 import Construction.Element;
+import Construction.FuncGroup;
 import Construction.Molecule;
 import UI.Workspace;
 
@@ -49,9 +50,13 @@ public class BondPlacer extends Tool {
 
     @Override
     public void onEmptyClick(MouseEvent e) {
-        for (Element element : selectedElements[0].getMolecule().getElementList()) {
-            System.out.println(element.getSymbol());
+        for (FuncGroup group : selectedElements[0].getMolecule().getGroupList()) {
+            System.out.println("group");
+            for(Element element: group.getContainedElements()){
+                System.out.println(element.getSymbol());
+            }
         }
+
         selectedElements[0] = null;
         selectedElements[1] = null;
     }

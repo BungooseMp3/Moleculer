@@ -106,15 +106,10 @@ public class Molecule {
     }
 
     public void addNewNode(Element selectedNode, String selectedElementID, Point pos){
-        try{
-            if(selectedNode.hasFreeBonds(1)){
-                this.addElement(new Element(selectedElementID,getWorkspace(),pos,selectedNode.getOrientation()*(-1),this));
-                Element newElement = this.getLastElement();
-                newElement.joinElements(selectedNode,1);
-
-            }
-        } catch (Exception e) {
-            System.out.println("Nuh uh");
+        if(selectedNode.hasFreeBonds(1)){
+            this.addElement(new Element(selectedElementID,getWorkspace(),pos,selectedNode.getOrientation()*(-1),this));
+            Element newElement = this.getLastElement();
+            newElement.makeBond(selectedNode,1);
         }
     }
 
@@ -127,6 +122,7 @@ public class Molecule {
     }
 
     public void joinMolecules(Molecule molecule) {
+
         this.getElementList().addAll(molecule.getElementList());
         for (int i = 0; i < molecule.getElementList().size(); i++) {
             molecule.getElementList().get(i).setMolecule(this);
@@ -134,5 +130,18 @@ public class Molecule {
 
         molecule.getWorkspace().getMolecules().remove(molecule);
         molecule = null;
+    }
+
+    public void addFuncGroup(FuncGroup newGroup) {
+        this.getGroupList().add(newGroup);
+    }
+
+    public FuncGroup findGroupWith(Element element) {
+        for (int i = 0; i<this.getGroupList().size(); i++) {
+            if(this.getGroupList().get(i).getContainedElements().contains(element)||this.getGroupList().get(i).getAttachedCarbons().contains(element)){
+                return getGroupList().get(i);
+            }
+        }
+        return null;
     }
 }
