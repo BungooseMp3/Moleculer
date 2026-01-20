@@ -179,7 +179,7 @@ public class Element extends MoleculeComponent {
         if(this.hasFreeBonds(bondType)&&element2.hasFreeBonds(bondType)){
             groupUpdate(new Element[]{this,element2});
             for (int i = 0; i < bondType; i++) {
-                this.joinElements(element2,bondType);
+                this.joinElements(element2);
             }
             this.updateBonds(element2);
             getWorkspace().repaint();
@@ -191,13 +191,13 @@ public class Element extends MoleculeComponent {
      * @param targetNode the node that <code>this</code> will be joined to
      */
 
-    public void joinElements(Element targetNode,int bondType) {
+    public void joinElements(Element targetNode) {
 
         Bond currentBond = this.getFirstFreeBond();//finds the first available bond
         currentBond.setBondType(1);
         currentBond.setConnectedElement(0,this); //sets the first node in the bond to the element this method is called on
         currentBond.setConnectedElement(1,targetNode);// sets the other node to the input target node
-        targetNode.getBonds()[getFirstFreeBondPos()] = currentBond; // updates the target node's bond list so they share a bond
+        targetNode.getBonds()[targetNode.getFirstFreeBondPos()] = currentBond; // updates the target node's bond list so they share a bond
 
         if(targetNode.getMolecule()!=this.getMolecule()){
             this.getMolecule().joinMolecules(targetNode.getMolecule());
@@ -326,4 +326,14 @@ public class Element extends MoleculeComponent {
         }
     }
 
+    public int getOccupiedBondNum() {
+        int num = 0;
+        for (int i = 0; i < this.getBonds().length; i++) {
+            Element[] b = this.getBonds()[i].getConnectedElements();
+            if(!this.getBonds()[i].isEmpty()){
+                num++;
+            }
+        }
+        return num;
+    }
 }
