@@ -124,6 +124,7 @@ public class Molecule {
     public void joinMolecules(Molecule molecule) {
 
         this.getElementList().addAll(molecule.getElementList());
+        this.setMr(this.getMr()+molecule.getMr());
         for (int i = 0; i < molecule.getElementList().size(); i++) {
             molecule.getElementList().get(i).setMolecule(this);
         }
@@ -143,5 +144,9 @@ public class Molecule {
             }
         }
         return null;
+    }
+
+    public void updateMass(String symbol){
+        this.setMr(this.getMr()+ ElementReference.atomicMass.get(symbol));
     }
 }

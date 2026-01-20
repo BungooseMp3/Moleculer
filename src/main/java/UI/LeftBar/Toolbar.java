@@ -3,12 +3,11 @@ package UI.LeftBar;
 import UI.GridTemplate;
 import UI.UIButtons.BondButton;
 import UI.UIButtons.ElementButton;
-import UI.UIButtons.Halogens.HalogenButton;
 import UI.UIButtons.Halogens.HalogenMenu;
 import UI.UIButtons.NumButtons.CarbonChainButton;
 import UI.UIButtons.NumButtons.CarbonRingButton;
-import UI.UIButtons.NumButtons.NumberSelector;
 import UI.UIButtons.NumButtons.SelectionButtonWrapper;
+import UI.UIButtons.SelectorButton;
 import UI.Workspace;
 
 import java.awt.*;
@@ -37,8 +36,9 @@ public class Toolbar extends GridTemplate {
         this.add(new ElementButton("C",0.75,70,workspace));
         this.add(new HalogenMenu(workspace));
         this.add(new SelectionButtonWrapper(new CarbonRingButton(workspace)));
+        this.add(new SelectorButton(workspace));
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
             this.add(new ElementButton("C",0.75,70,workspace));
         }
     }

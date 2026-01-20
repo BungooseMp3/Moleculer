@@ -12,6 +12,7 @@ public class PopoutButtonPanel extends JPanel {
         this.setMaximumSize(s);
         this.setMinimumSize(s);
         this.setPreferredSize(s);
+        this.setBackground(Color.white);
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.add(Box.createVerticalGlue());
         this.add(new PopoutButton(toolbar, visible));

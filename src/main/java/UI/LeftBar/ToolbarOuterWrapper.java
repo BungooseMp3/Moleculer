@@ -8,6 +8,7 @@ import java.awt.*;
 public class ToolbarOuterWrapper extends JPanel {
     public ToolbarOuterWrapper(Workspace workspace, ToolbarSwitcher toolbar){
         this.setPreferredSize(new Dimension(220,1000));
+        this.setBackground(Color.white);
         this.setLayout(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();

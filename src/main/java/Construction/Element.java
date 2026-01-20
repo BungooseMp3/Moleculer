@@ -277,6 +277,7 @@ public class Element extends MoleculeComponent {
         if (bonds.size()>1){
             for(Bond bond: bonds){
                 bond.setBondType(bonds.size());
+                this.getMolecule().setMr(this.getMolecule().getMr());
                 bond.repaint();
             }
         }
@@ -336,4 +337,5 @@ public class Element extends MoleculeComponent {
         }
         return num;
     }
+
 }

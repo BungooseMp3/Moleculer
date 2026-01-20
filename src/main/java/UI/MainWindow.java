@@ -7,11 +7,11 @@ import java.awt.*;
 
 public class MainWindow extends JFrame {
     public MainWindow(){
-        Workspace workspace = new Workspace();
+        Workspace workspace = new Workspace(new BottomBar());
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.getContentPane().add(new LeftPanel(workspace),BorderLayout.WEST);
-        this.getContentPane().add(new BottomBar(),BorderLayout.SOUTH);
+        this.getContentPane().add(workspace.getBottomBar(),BorderLayout.SOUTH);
         this.getContentPane().add(workspace);
 
         /*GraphicsDevice gd = GraphicsEnvironment

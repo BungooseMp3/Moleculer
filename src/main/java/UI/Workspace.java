@@ -32,11 +32,21 @@ public class Workspace extends JPanel {
 
     private Tool currentTool;
 
+    public BottomBar getBottomBar() {
+        return bottomBar;
+    }
+
+    public void setBottomBar(BottomBar bottomBar) {
+        this.bottomBar = bottomBar;
+    }
+
+    private BottomBar bottomBar;
+
     public void addNewMolecule(String symbol, int x, int y){
         this.getMolecules().add(new Molecule(symbol,this, new Point(x-25,y-25)));//adds a new molecule with start element indicated by the symbol
     }
 
-    public Workspace(){
+    public Workspace(BottomBar bottomBar) {
         this.setLayout(null);
         this.setBackground(new Color(255,255,255));
         this.addMouseListener(new MouseAdapter() {
@@ -47,6 +57,7 @@ public class Workspace extends JPanel {
             }
         });
 
+        this.bottomBar = bottomBar;
     }
 
 }

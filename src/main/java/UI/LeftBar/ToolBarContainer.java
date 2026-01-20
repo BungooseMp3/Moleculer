@@ -14,5 +14,6 @@ public class ToolBarContainer extends JPanel {
         this.add(new Toolbar(workspace,10));
         this.add(Box.createVerticalGlue());
         this.setVisible(true);
+        this.setBackground(Color.white);
     }
 }
