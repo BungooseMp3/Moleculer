@@ -1,11 +1,12 @@
-package UI;
+package UI.BottomBar;
 
 import Construction.Molecule;
+import UI.UIButtons.NameButton;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class BottomBar extends JPanel {
+public class GreyBar extends JPanel {
     public Molecule getCurrentMol() {
         return currentMol;
     }
@@ -16,9 +17,21 @@ public class BottomBar extends JPanel {
 
     private Molecule currentMol;
 
-    public BottomBar(){
+    public NameButtonPanel getNameButton() {
+        return nameButton;
+    }
+
+    public void setNameButton(NameButtonPanel nameButton) {
+        this.nameButton = nameButton;
+    }
+
+    private NameButtonPanel nameButton;
+
+    public GreyBar(){
+
         this.setPreferredSize(new Dimension(0,24));
-        this.setBackground(Color.gray);
+        this.setBackground(Color.lightGray);
+        this.setBorder(BorderFactory.createMatteBorder(1,0,0,0,Color.black));
     }
 
     @Override

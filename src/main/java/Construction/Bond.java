@@ -106,4 +106,15 @@ public class Bond extends MoleculeComponent {
             g2.drawString(Integer.toString(bondType), x, y);
         }
     }
+
+    public boolean hasCarbon(){
+        for (Element each: getConnectedElements()){
+            if (!Objects.isNull(each)){
+                if(each.isElement("C")){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

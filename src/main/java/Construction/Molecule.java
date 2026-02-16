@@ -4,6 +4,7 @@ import UI.Workspace;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Molecule {
 
@@ -93,8 +94,8 @@ public class Molecule {
 
         groupList = new ArrayList<FuncGroup>();
         elementList = new ArrayList<Element>();
-        Element startElement = new Element(startElementID, workspace, pos,1,this);
-        startElement.setLocation(pos);//a new element is made using the specified ID
+        Element startElement = new Element(startElementID, workspace, pos,1,this);//a new element is made using the specified ID
+        startElement.setLocation(pos);
         elementList.add(startElement); // the new element is added to the molecule
         mr = startElement.getAr();
 
@@ -124,6 +125,7 @@ public class Molecule {
     public void joinMolecules(Molecule molecule) {
 
         this.getElementList().addAll(molecule.getElementList());
+        this.getGroupList().addAll(molecule.getGroupList());
         this.setMr(this.getMr()+molecule.getMr());
         for (int i = 0; i < molecule.getElementList().size(); i++) {
             molecule.getElementList().get(i).setMolecule(this);
@@ -148,5 +150,87 @@ public class Molecule {
 
     public void updateMass(String symbol){
         this.setMr(this.getMr()+ ElementReference.atomicMass.get(symbol));
+    }
+
+    public void nameMolecule() {
+        this.consolidateGroups();
+        this.setPriorityGroup(this.findPriorityGroup());
+        this.findPriorityChain();
+
+        for (FuncGroup group : this.getGroupList()) {
+            System.out.println(group.getGroupName());
+        }
+    }
+
+    private FuncGroup findPriorityGroup() {
+        if(this.getGroupList().isEmpty()){
+            return null;
+        } else{
+            FuncGroup currentGroup = this.getGroupList().getFirst();
+            for (FuncGroup group : this.getGroupList()) {
+                if(!Objects.isNull(group.getGroupName())){
+                    if(Objects.isNull(currentGroup.getGroupName())){
+                        currentGroup = group;
+                    } else if(ElementReference.atomicMasses.get(group.getGroupName())<ElementReference.atomicMasses.get(currentGroup.getGroupName())){
+                        currentGroup = group;
+                    }
+
+                }
+
+            }
+            return currentGroup;
+        }
+
+    }
+
+    public void consolidateGroups(){
+
+        for (Element element : elementList) {
+            if(element.isElement("C")){
+                for(Bond bond : element.getBonds()){
+                    if(bond.getBondType()>1){
+                        Element element1 = bond.getConnectedElements()[0];
+                        Element element2 = bond.getConnectedElements()[1];
+                        if ((Objects.equals(element1.getSymbol(), "C") && Objects.equals(element2.getSymbol(), "C"))&&element1.isNotAlkeneWith(element2)){
+                            FuncGroup group = new FuncGroup(element1);
+                            group.addElement(element2);
+                            if(bond.getBondType()==2){
+                                group.setGroupName("alkene");
+                            } else if (bond.getBondType()==3){
+                                group.setGroupName("alkyne");
+                            }
+                            element1.addGroup(group);
+                        }
+
+                    }
+                }
+            }
+        }
+
+        FuncGroup[] list = this.getGroupList().toArray(new FuncGroup[groupList.size()]);
+        for(FuncGroup group : list){
+            group.checkElements();
+        }
+
+        for(Element element : elementList){
+            if(element.getGroups()!=null){
+                element.updateGroups();
+            }
+        }
+
+        for (FuncGroup group : groupList) {
+            if(Objects.equals(group.getGroupName(), "carbonyl")){
+                group.classifyCarbonyl();
+            }
+        }
+    }
+
+    public void findPriorityChain(){
+        for(Element mainCarbon : getPriorityGroup().getAttachedCarbons()){
+            Element currentCarbon = mainCarbon;
+            int currentChainWeight= 0;
+            int priorityChainWeight = 0;
+
+        }
     }
 }

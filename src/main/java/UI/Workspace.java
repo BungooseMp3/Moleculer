@@ -2,6 +2,7 @@ package UI;
 
 import Construction.Element;
 import Construction.Molecule;
+import UI.BottomBar.GreyBar;
 import UI.Tools.Tool;
 
 import javax.swing.*;
@@ -32,21 +33,21 @@ public class Workspace extends JPanel {
 
     private Tool currentTool;
 
-    public BottomBar getBottomBar() {
-        return bottomBar;
+    public GreyBar getBottomBar() {
+        return greyBar;
     }
 
-    public void setBottomBar(BottomBar bottomBar) {
-        this.bottomBar = bottomBar;
+    public void setBottomBar(GreyBar greyBar) {
+        this.greyBar = greyBar;
     }
 
-    private BottomBar bottomBar;
+    private GreyBar greyBar;
 
     public void addNewMolecule(String symbol, int x, int y){
-        this.getMolecules().add(new Molecule(symbol,this, new Point(x-25,y-25)));//adds a new molecule with start element indicated by the symbol
+        this.getMolecules().add(new Molecule(symbol,this, new Point(x-30,y-30)));//adds a new molecule with start element indicated by the symbol
     }
 
-    public Workspace(BottomBar bottomBar) {
+    public Workspace(GreyBar greyBar) {
         this.setLayout(null);
         this.setBackground(new Color(255,255,255));
         this.addMouseListener(new MouseAdapter() {
@@ -57,7 +58,7 @@ public class Workspace extends JPanel {
             }
         });
 
-        this.bottomBar = bottomBar;
+        this.greyBar = greyBar;
     }
 
 }

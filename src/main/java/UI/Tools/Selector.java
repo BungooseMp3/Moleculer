@@ -16,18 +16,23 @@ public class Selector extends Tool {
     @Override
     public void onElementClick(MouseEvent e, Element element) {
         getWorkspace().getBottomBar().setCurrentMol(element.getMolecule());
-        getWorkspace().getBottomBar().repaint();
+        updateBar();
     }
 
     @Override
     public void onEmptyClick(MouseEvent e) {
         getWorkspace().getBottomBar().setCurrentMol(null);
-        getWorkspace().getBottomBar().repaint();
+        updateBar();
     }
 
     @Override
     public void onBondClick(MouseEvent e, Bond bond) {
         getWorkspace().getBottomBar().setCurrentMol(bond.getMolecule());
+        updateBar();
+    }
+
+    public void updateBar(){
         getWorkspace().getBottomBar().repaint();
+        getWorkspace().getBottomBar().getNameButton().repaint();
     }
 }
