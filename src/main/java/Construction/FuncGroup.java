@@ -7,6 +7,17 @@ public class FuncGroup {
     private ArrayList<Element> attachedCarbons = new ArrayList<Element>();
     private ArrayList<Element> containedElements = new ArrayList<Element>();
 
+
+    public int getGroupNumber() {
+        return groupNumber;
+    }
+
+    public void setGroupNumber(int groupNumber) {
+        this.groupNumber = groupNumber;
+    }
+
+    private int groupNumber;
+
     public Molecule getMolecule() {
         return molecule;
     }

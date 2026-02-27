@@ -2,9 +2,9 @@ package Construction;
 
 import UI.Workspace;
 
+import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 public class Molecule {
 
@@ -14,7 +14,7 @@ public class Molecule {
     private String name;
     private String empiricalForm;
     private String molecularForm;
-    private int[] priorityChain;
+    private ArrayList<Chain> priorityChainList;
     private FuncGroup priorityGroup;
     private ArrayList<FuncGroup> groupList;
 
@@ -64,14 +64,6 @@ public class Molecule {
 
     public void setMolecularForm(String molecularForm) {
         this.molecularForm = molecularForm;
-    }
-
-    public int[] getPriorityChain() {
-        return priorityChain;
-    }
-
-    public void setPriorityChain(int[] priorityChain) {
-        this.priorityChain = priorityChain;
     }
 
     public FuncGroup getPriorityGroup() {
@@ -155,11 +147,18 @@ public class Molecule {
     public void nameMolecule() {
         this.consolidateGroups();
         this.setPriorityGroup(this.findPriorityGroup());
-        this.findPriorityChain();
-
-        for (FuncGroup group : this.getGroupList()) {
-            System.out.println(group.getGroupName());
+        this.findPriorityChains();
+        //temp
+        for(Chain stack : this.priorityChainList){
+            stack.nameChain();
+            for(Element element : stack.getContents()){
+                element.setColor(ElementReference.findColor(priorityChainList.indexOf(stack)));
+                element.setChainPos(stack.getContents().indexOf(element));
+                element.repaint();
+            }
         }
+        // temp
+
     }
 
     private FuncGroup findPriorityGroup() {
@@ -171,7 +170,7 @@ public class Molecule {
                 if(!Objects.isNull(group.getGroupName())){
                     if(Objects.isNull(currentGroup.getGroupName())){
                         currentGroup = group;
-                    } else if(ElementReference.atomicMasses.get(group.getGroupName())<ElementReference.atomicMasses.get(currentGroup.getGroupName())){
+                    } else if(ElementReference.groupPriorities.get(group.getGroupName())<ElementReference.groupPriorities.get(currentGroup.getGroupName())){
                         currentGroup = group;
                     }
 
@@ -186,25 +185,7 @@ public class Molecule {
     public void consolidateGroups(){
 
         for (Element element : elementList) {
-            if(element.isElement("C")){
-                for(Bond bond : element.getBonds()){
-                    if(bond.getBondType()>1){
-                        Element element1 = bond.getConnectedElements()[0];
-                        Element element2 = bond.getConnectedElements()[1];
-                        if ((Objects.equals(element1.getSymbol(), "C") && Objects.equals(element2.getSymbol(), "C"))&&element1.isNotAlkeneWith(element2)){
-                            FuncGroup group = new FuncGroup(element1);
-                            group.addElement(element2);
-                            if(bond.getBondType()==2){
-                                group.setGroupName("alkene");
-                            } else if (bond.getBondType()==3){
-                                group.setGroupName("alkyne");
-                            }
-                            element1.addGroup(group);
-                        }
-
-                    }
-                }
-            }
+            element.checkAlkenes();
         }
 
         FuncGroup[] list = this.getGroupList().toArray(new FuncGroup[groupList.size()]);
@@ -223,14 +204,103 @@ public class Molecule {
                 group.classifyCarbonyl();
             }
         }
+
+        this.cleanGroups();
     }
 
-    public void findPriorityChain(){
-        for(Element mainCarbon : getPriorityGroup().getAttachedCarbons()){
-            Element currentCarbon = mainCarbon;
-            int currentChainWeight= 0;
-            int priorityChainWeight = 0;
+    public void findPriorityChains(){
+        ArrayList<Chain> chainlist = new ArrayList<Chain>();
+        if(Objects.isNull(this.getPriorityGroup())){
+            for(Element element: getElementList()){
+                if(element.isElement("C")){
+                    Stack<Element> chain = depthFirstSearchCarbonOnly(element,new ArrayList<>(),new Stack<>(),new Stack<>());
+                    chainlist.add(new Chain(depthFirstSearchCarbonOnly(chain.getLast(),new ArrayList<>(),new Stack<>(),new Stack<>())));
+                }
+            }
+        } else if (this.getPriorityGroup().getGroupName().equals("alkene")){
+            Stack<Element> chain = depthFirstSearch(getPriorityGroup().getAttachedCarbons().getFirst(),new ArrayList<>(),new Stack<>(),new Stack<>(),50,50);
+            chainlist.add(new Chain(depthFirstSearch(chain.getLast(),new ArrayList<>(),new Stack<>(),new Stack<>(),50,50)));
+
+        } else {
+            for (Element mainCarbon : getPriorityGroup().getAttachedCarbons()) {
+                Stack<Element> chain = depthFirstSearch(mainCarbon, new ArrayList<>(), new Stack<>(), new Stack<>(), 50, 50);
+                chainlist.add(new Chain(depthFirstSearch(chain.getLast(), new ArrayList<>(), new Stack<>(), new Stack<>(), 50, 50)));
+            }
+        }
+        for(Chain chain : chainlist){
+            Collections.reverse(chain.getContents());
+        }
+        this.priorityChainList = chainlist;
+    }
+
+    public static Stack<Element> depthFirstSearch(Element startNode, ArrayList<Element> checkedNodes, Stack<Element> currentChain ,Stack<Element> priorityChain,int priorityChainWeight, int currentChainWeight){
+        currentChain.push(startNode);
+        while(checkedNodes.isEmpty()||!currentChain.isEmpty()){
+            Element node = currentChain.getLast();
+            if(!Objects.isNull(node.getGroups())&&currentChain.size()>1) {
+                for (FuncGroup group : node.getGroups()) {
+                    if ((group.getGroupName() != null) && (ElementReference.groupPriorities.get(group.getGroupName()) < currentChainWeight)) {
+                        currentChainWeight = ElementReference.groupPriorities.get(group.getGroupName());
+                    }
+                    if (currentChainWeight == priorityChainWeight) {
+                        if(currentChain.size()>priorityChain.size()){
+                            priorityChain.clear();
+                            priorityChain.addAll(currentChain);
+                        }
+                    } else if(currentChainWeight < priorityChainWeight){
+                        priorityChain.clear();
+                        priorityChain.addAll(currentChain);
+                        priorityChainWeight = currentChainWeight;
+                    }
+                }
+            }
+
+            Element nextnode = node.getFirstAdjCarbon(checkedNodes,currentChain);
+
+            if(!Objects.isNull(nextnode)){
+                currentChain.push(nextnode);
+            } else {
+                if(priorityChain.isEmpty()||currentChain.contains(priorityChain.getLast())){
+                    priorityChain.clear();
+                    priorityChain.addAll(currentChain);
+                }
+                checkedNodes.add(currentChain.pop());
+            }
 
         }
+        return priorityChain;
     }
+
+    public static Stack<Element> depthFirstSearchCarbonOnly(Element startCarbon,ArrayList<Element> checkedNodes, Stack<Element> currentChain ,Stack<Element> priorityChain){
+        currentChain.push(startCarbon);
+        while(checkedNodes.isEmpty()||!currentChain.isEmpty()){
+            Element node = currentChain.getLast();
+            Element nextNode = node.getFirstAdjCarbon(checkedNodes,currentChain);
+            if(!Objects.isNull(nextNode)){
+                currentChain.push(nextNode);
+            } else{
+                if(currentChain.size()>priorityChain.size()){
+                    priorityChain.clear();
+                    priorityChain.addAll(currentChain);
+                }
+                checkedNodes.add(currentChain.pop());
+            }
+        }
+        return priorityChain;
+    }
+
+    public void cleanGroups(){
+        for(Element element : this.getElementList()){
+            if(element.getGroups()!=null){
+                for (FuncGroup group : element.getGroups()){
+                    if(group.getGroupName() == null && group.getContainedElements().isEmpty()){
+                        element.removeGroup(group);
+                        group = null;
+                    }
+                }
+            }
+        }
+    }
+
+
 }

@@ -51,7 +51,7 @@ public class ElementReference {
 
     );
 
-    public static final Map<String, Integer> atomicMasses = Map.ofEntries(
+    public static final Map<String, Integer> groupPriorities = Map.ofEntries(
           Map.entry("carboxylic acid",1),
             Map.entry("ester",2),
             Map.entry("acid halide",3),
@@ -62,8 +62,49 @@ public class ElementReference {
             Map.entry("hydroxy",8),
             Map.entry("alkene",9),
             Map.entry("amine",10),
-            Map.entry("halogen",11)
+            Map.entry("alkyne",11),
+            Map.entry("halogen",12)
 
+    );
+
+    public static final Map<String,String> prefixes = Map.of(
+            "nitrile","cyano",
+            "aldehyde","formyl",
+            "ketone","oxo",
+            "hydroxy","hydroxy",
+            "amine","amino",
+            "I","iodo",
+            "Br","bromo",
+            "Cl","chloro"
+    );
+
+    public static final Map<String,String> suffixes = Map.ofEntries(
+            Map.entry("carboxylic acid", "oic acid"),
+            Map.entry("ester", "oate"),
+            Map.entry("Cl", "oyl chloride"),
+            Map.entry("I", "oyl bromide"),
+            Map.entry("Br", "oyl iodide"),
+            Map.entry("amide", "amide"),
+            Map.entry("nitrile", "nitrile"),
+            Map.entry("aldehyde", "al"),
+            Map.entry("ketone", "one"),
+            Map.entry("hydroxy", "ol"),
+            Map.entry("amine", "amine"),
+            Map.entry("alkene", "en"),
+            Map.entry("alkyne", "yne")
+    );
+
+    public static final Map<Integer,String> chainLengths = Map.ofEntries(
+            Map.entry(1,"meth"),
+            Map.entry(2,"eth"),
+            Map.entry(3,"prop"),
+            Map.entry(4,"but"),
+            Map.entry(5,"pent"),
+            Map.entry(6,"hex"),
+            Map.entry(7,"hept"),
+            Map.entry(8,"oct"),
+            Map.entry(9,"non"),
+            Map.entry(10,"dec")
     );
 
 }

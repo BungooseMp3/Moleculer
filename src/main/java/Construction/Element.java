@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Stack;
 
 public class Element extends MoleculeComponent {
     static int elementWidth = 60;
@@ -18,6 +19,26 @@ public class Element extends MoleculeComponent {
     private double ar;
     private int orientation;
     private Point center;
+
+    public int getChainPos() {
+        return chainPos;
+    }
+
+    public void setChainPos(int chainPos) {
+        this.chainPos = chainPos;
+    }
+
+    public int chainPos;
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    private Color color = new Color(Color.BLACK.getRGB());
 
     public ArrayList<FuncGroup> getGroups() {
         return groups;
@@ -144,18 +165,14 @@ public class Element extends MoleculeComponent {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        Color color = new Color(0, 0, 0);
-
-        if (this.getMolecule().findGroupWith(this) != null) {
-            int num = this.getMolecule().getGroupList().indexOf(getMolecule().findGroupWith(this)) + 1;
-            color = ElementReference.findColor(num);
-        }
 
 
         if (getSymbol().equals("C")) {
 
             g2d.setColor(color);
             g2d.fillOval(elementWidth / 2 - 5, elementHeight / 2 - 5, 10, 10);
+            g2d.setColor(Color.red);
+            g2d.drawString(Integer.toString(chainPos),25,25);
 
         } else {
 
@@ -406,6 +423,28 @@ public class Element extends MoleculeComponent {
         }
     }
 
+    public void checkAlkenes(){
+        if(this.isElement("C")){
+            for(Bond bond : this.getBonds()){
+                if(bond.getBondType()>1){
+                    Element element1 = bond.getConnectedElements()[0];
+                    Element element2 = bond.getConnectedElements()[1];
+                    if ((Objects.equals(element1.getSymbol(), "C") && Objects.equals(element2.getSymbol(), "C"))&&element1.isNotAlkeneWith(element2)){
+                        FuncGroup group = new FuncGroup(element1);
+                        group.addElement(element2);
+                        if(bond.getBondType()==2){
+                            group.setGroupName("alkene");
+                        } else if (bond.getBondType()==3){
+                            group.setGroupName("alkyne");
+                        }
+                        element1.addGroup(group);
+                    }
+
+                }
+            }
+        }
+    }
+
 
     public void addGroup(FuncGroup funcGroup) {
         this.getGroups().add(funcGroup);
@@ -468,6 +507,17 @@ public class Element extends MoleculeComponent {
         }
 
         return true;
+    }
+
+    public Element getFirstAdjCarbon(ArrayList<Element> checkedNodes, Stack<Element> stack) {
+        for(Bond bond : this.getBonds()){
+            for(Element element : bond.getConnectedElements()){
+                if(!Objects.isNull(element)&&element.isElement("C")&&element!=this&&!checkedNodes.contains(element)&&!stack.contains(element)){
+                    return element;
+                }
+            }
+        }
+        return null;
     }
 }
 
