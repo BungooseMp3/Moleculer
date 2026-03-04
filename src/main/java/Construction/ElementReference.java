@@ -67,6 +67,22 @@ public class ElementReference {
 
     );
 
+    public static final Map<String, Integer> namePriorities = Map.ofEntries(
+            Map.entry("oic acid",1),
+            Map.entry("oate",2),
+            Map.entry("acid halide",3),
+            Map.entry("amide",4),
+            Map.entry("cyano",5),
+            Map.entry("formyl",6),
+            Map.entry("oxo",7),
+            Map.entry("hydroxy",8),
+            Map.entry("ene",9),
+            Map.entry("amino",10),
+            Map.entry("yne",11),
+            Map.entry("halogen",12)
+
+    );
+
     public static final Map<String,String> prefixes = Map.of(
             "nitrile","cyano",
             "aldehyde","formyl",
@@ -90,7 +106,7 @@ public class ElementReference {
             Map.entry("ketone", "one"),
             Map.entry("hydroxy", "ol"),
             Map.entry("amine", "amine"),
-            Map.entry("alkene", "en"),
+            Map.entry("alkene", "ene"),
             Map.entry("alkyne", "yne")
     );
 
@@ -105,6 +121,13 @@ public class ElementReference {
             Map.entry(8,"oct"),
             Map.entry(9,"non"),
             Map.entry(10,"dec")
+    );
+
+    public static final Map<Integer,String> multiPrefixes = Map.ofEntries(
+            Map.entry(1,""),
+            Map.entry(2,"di"),
+            Map.entry(3,"tri"),
+            Map.entry(4,"tetra")
     );
 
 }

@@ -1,5 +1,6 @@
 package Construction;
 
+import UI.MoleculeName;
 import UI.Workspace;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ public class Molecule {
     private Workspace workspace;
     private ArrayList<Element> elementList;
     private double mr;
-    private String name;
+    private String name = "";
     private String empiricalForm;
     private String molecularForm;
     private ArrayList<Chain> priorityChainList;
@@ -98,11 +99,11 @@ public class Molecule {
         this.setWorkspace(workspace);
     }
 
-    public void addNewNode(Element selectedNode, String selectedElementID, Point pos){
-        if(selectedNode.hasFreeBonds(1)){
+    public void addNewNode(Element selectedNode, String selectedElementID, Point pos,int bondtype){
+        if(selectedNode.hasFreeBonds(bondtype)){
             this.addElement(new Element(selectedElementID,getWorkspace(),pos,selectedNode.getOrientation()*(-1),this));
             Element newElement = this.getLastElement();
-            newElement.makeBond(selectedNode,1);
+            newElement.makeBond(selectedNode,bondtype);
         }
     }
 
@@ -148,16 +149,22 @@ public class Molecule {
         this.consolidateGroups();
         this.setPriorityGroup(this.findPriorityGroup());
         this.findPriorityChains();
-        //temp
+
         for(Chain stack : this.priorityChainList){
             stack.nameChain();
-            for(Element element : stack.getContents()){
-                element.setColor(ElementReference.findColor(priorityChainList.indexOf(stack)));
-                element.setChainPos(stack.getContents().indexOf(element));
-                element.repaint();
+
+            if(!stack.isMainChain){
+               this.setName(stack.getName()+" "+this.getName());
+            } else {
+                this.setName(this.getName()+" "+stack.getName());
             }
+
         }
-        // temp
+
+        if(!this.getName().isEmpty()){
+            workspace.add(new MoleculeName(this));
+            workspace.repaint();
+        }
 
     }
 
@@ -209,22 +216,23 @@ public class Molecule {
     }
 
     public void findPriorityChains(){
-        ArrayList<Chain> chainlist = new ArrayList<Chain>();
+        ArrayList<Chain> chainlist = new ArrayList<>();
         if(Objects.isNull(this.getPriorityGroup())){
             for(Element element: getElementList()){
                 if(element.isElement("C")){
                     Stack<Element> chain = depthFirstSearchCarbonOnly(element,new ArrayList<>(),new Stack<>(),new Stack<>());
-                    chainlist.add(new Chain(depthFirstSearchCarbonOnly(chain.getLast(),new ArrayList<>(),new Stack<>(),new Stack<>())));
+                    chainlist.add(new Chain(depthFirstSearchCarbonOnly(chain.getLast(),new ArrayList<>(),new Stack<>(),new Stack<>()),this.priorityGroup));
+                    break;
                 }
             }
         } else if (this.getPriorityGroup().getGroupName().equals("alkene")){
             Stack<Element> chain = depthFirstSearch(getPriorityGroup().getAttachedCarbons().getFirst(),new ArrayList<>(),new Stack<>(),new Stack<>(),50,50);
-            chainlist.add(new Chain(depthFirstSearch(chain.getLast(),new ArrayList<>(),new Stack<>(),new Stack<>(),50,50)));
+            chainlist.add(new Chain(depthFirstSearch(chain.getLast(),new ArrayList<>(),new Stack<>(),new Stack<>(),50,50),this.priorityGroup));
 
         } else {
             for (Element mainCarbon : getPriorityGroup().getAttachedCarbons()) {
                 Stack<Element> chain = depthFirstSearch(mainCarbon, new ArrayList<>(), new Stack<>(), new Stack<>(), 50, 50);
-                chainlist.add(new Chain(depthFirstSearch(chain.getLast(), new ArrayList<>(), new Stack<>(), new Stack<>(), 50, 50)));
+                chainlist.add(new Chain(depthFirstSearch(chain.getLast(), new ArrayList<>(), new Stack<>(), new Stack<>(), 50, 50),this.priorityGroup));
             }
         }
         for(Chain chain : chainlist){
@@ -290,10 +298,19 @@ public class Molecule {
     }
 
     public void cleanGroups(){
-        for(Element element : this.getElementList()){
+        ArrayList<Element> list = new ArrayList<>(this.getElementList());
+        for(Element element : list){
             if(element.getGroups()!=null){
-                for (FuncGroup group : element.getGroups()){
+                ArrayList<FuncGroup> dupedGroups =  new ArrayList<>();
+                ArrayList<FuncGroup> list2 = new ArrayList<>(element.getGroups());
+                for (FuncGroup group : list2){
                     if(group.getGroupName() == null && group.getContainedElements().isEmpty()){
+                        element.removeGroup(group);
+                        group = null;
+                    }
+                    if(!dupedGroups.contains(group)){
+                        dupedGroups.add(group);
+                    } else {
                         element.removeGroup(group);
                         group = null;
                     }
@@ -301,6 +318,4 @@ public class Molecule {
             }
         }
     }
-
-
 }

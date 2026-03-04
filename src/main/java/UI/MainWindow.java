@@ -9,8 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainWindow extends JFrame {
+    public Workspace workspace;
     public MainWindow(){
-        Workspace workspace = new Workspace(new GreyBar());
+        Workspace workspace = new Workspace(new GreyBar(),this);
+        this.workspace = workspace;
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.getContentPane().add(new LeftPanel(workspace),BorderLayout.WEST);

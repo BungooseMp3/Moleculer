@@ -1,19 +1,21 @@
 package UI.UIButtons;
 
-import UI.Tools.Selector;
+import UI.Tools.Deleter;
 import UI.Workspace;
 
+import javax.swing.*;
 import java.awt.*;
 
-public class SelectorButton extends ButtonTemplate {
-    public SelectorButton(Workspace workspace) {
+public class DeletionButton extends ButtonTemplate {
+
+    public DeletionButton(Workspace workspace){
         this.setWorkspace(workspace);
         this.initButton();
     }
 
     @Override
     public void buttonLeftClicked() {
-        getWorkspace().setCurrentTool(new Selector(getWorkspace()));
+        getWorkspace().setCurrentTool(new Deleter(getWorkspace()));
     }
 
     @Override
@@ -24,10 +26,17 @@ public class SelectorButton extends ButtonTemplate {
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        int[] x = {23, 82, 60, 72, 60, 48, 32 , 23};
-        int[] y = {10, 60, 65, 85, 92, 72, 87, 10};
+        int[] x = {
+                22, 32, 68, 78
+        };
+
+        int[] y = {
+                32, 87, 87, 32
+        };
 
         g2.setColor(Color.BLACK);
+        g2.fillRoundRect(20,21,60,10,10,10);
+        g2.fillOval(45,15,10,10);
         g2.fillPolygon(x, y, x.length);
     }
 }

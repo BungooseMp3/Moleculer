@@ -33,7 +33,7 @@ public class CarbonChainPlacer extends Tool {
 
     public void placeCarbonChain(Element startElement,int length) {
         for (int i = 0; i < length; i++) {
-            startElement.getMolecule().addNewNode(startElement,"C",startElement.calcNextPos());
+            startElement.getMolecule().addNewNode(startElement,"C",startElement.calcNextPos(),1);
             startElement = startElement.getMolecule().getLastElement();
         }
         this.getWorkspace().repaint();

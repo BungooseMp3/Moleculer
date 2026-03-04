@@ -12,8 +12,8 @@ import java.util.Objects;
 import java.util.Stack;
 
 public class Element extends MoleculeComponent {
-    static int elementWidth = 60;
-    static int elementHeight = 60;
+    public static int elementWidth = 60;
+    public static int elementHeight = 60;
     private Bond[] bonds;
     private String symbol;
     private double ar;
@@ -171,8 +171,6 @@ public class Element extends MoleculeComponent {
 
             g2d.setColor(color);
             g2d.fillOval(elementWidth / 2 - 5, elementHeight / 2 - 5, 10, 10);
-            g2d.setColor(Color.red);
-            g2d.drawString(Integer.toString(chainPos),25,25);
 
         } else {
 

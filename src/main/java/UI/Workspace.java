@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 public class Workspace extends JPanel {
 
+    public MainWindow window;
+
     public ArrayList<Molecule> getMolecules() {
         return molecules;
     }
@@ -41,13 +43,22 @@ public class Workspace extends JPanel {
         this.greyBar = greyBar;
     }
 
+    public GreyBar getGreyBar() {
+        return greyBar;
+    }
+
+    public void setGreyBar(GreyBar greyBar) {
+        this.greyBar = greyBar;
+    }
+
     private GreyBar greyBar;
 
     public void addNewMolecule(String symbol, int x, int y){
         this.getMolecules().add(new Molecule(symbol,this, new Point(x-30,y-30)));//adds a new molecule with start element indicated by the symbol
     }
 
-    public Workspace(GreyBar greyBar) {
+    public Workspace(GreyBar greyBar,MainWindow mainWindow) {
+        this.window = mainWindow;
         this.setLayout(null);
         this.setBackground(new Color(255,255,255));
         this.addMouseListener(new MouseAdapter() {
