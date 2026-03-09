@@ -22,7 +22,7 @@ public class Toolbar extends GridTemplate {
     private Workspace workspace;
 
     public Toolbar (Workspace workspace, int radius){
-        this.initGrid(8,2, new Dimension(200,800),radius,new Color(190,10,10),workspace);
+        this.initGrid(7,2, new Dimension(200,700),radius,new Color(190,10,10),workspace);
 
         add(new BondButton(1,workspace));
         this.add(new BondButton(2, workspace));
@@ -38,9 +38,5 @@ public class Toolbar extends GridTemplate {
         this.add(new SelectionButtonWrapper(new CarbonRingButton(workspace)));
         this.add(new SelectorButton(workspace));
         this.add(new DeletionButton(workspace));
-
-        for (int i = 0; i < 2; i++) {
-            this.add(new ElementButton("C",0.75,70,workspace));
-        }
     }
 }

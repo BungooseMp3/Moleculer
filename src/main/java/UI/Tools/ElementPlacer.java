@@ -27,7 +27,6 @@ public class ElementPlacer extends Tool {
     public void onElementClick(MouseEvent e, Element element) {
         if (element.hasFreeBonds(1) && element.getOccupiedBondNum()<3){
             element.getMolecule().addNewNode(element,this.elementSymbol,element.calcNextPos(),1);
-            element.getMolecule().updateMass(elementSymbol);
         } else {
             System.out.println("no free spaces");
         }

@@ -165,8 +165,6 @@ public class Element extends MoleculeComponent {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-
-
         if (getSymbol().equals("C")) {
 
             g2d.setColor(color);
@@ -192,9 +190,12 @@ public class Element extends MoleculeComponent {
 
             g2d.drawString(text, x, y);
 
-            if (text == "NH" && this.hasFreeBonds(2)) {
+            if (text == "NH" && this.getOccupiedBondNum()<3) {
                 g2d.setFont(new Font("Arial", Font.PLAIN, (int) (fontSize * 0.4)));
-                g2d.drawString("2", (int) (elementWidth * 0.85), (int) (y + elementWidth * 0.2));
+                if(this.getOccupiedBondNum()!=2){
+                    g2d.drawString(Integer.toString(3-this.getOccupiedBondNum()), (int) (elementWidth * 0.85), (int) (y + elementWidth * 0.2));
+                }
+
             }
         }
 
@@ -203,11 +204,15 @@ public class Element extends MoleculeComponent {
     public void makeBond(Element element2, int bondType) {
         if (this.hasFreeBonds(bondType) && element2.hasFreeBonds(bondType)) {
             groupUpdate(new Element[]{this, element2});
+            if(this.getMolecule()==element2.getMolecule()){
+                this.getMolecule().updateMass(this.getSymbol(),bondType);
+            }
             for (int i = 0; i < bondType; i++) {
                 this.joinElements(element2);
             }
             this.updateBonds(element2);
             getWorkspace().repaint();
+            getWorkspace().getBottomBar().repaint();
         }
     }
 

@@ -3,7 +3,6 @@ package Construction;
 import UI.MoleculeName;
 import UI.Workspace;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
@@ -90,7 +89,7 @@ public class Molecule {
         Element startElement = new Element(startElementID, workspace, pos,1,this);//a new element is made using the specified ID
         startElement.setLocation(pos);
         elementList.add(startElement); // the new element is added to the molecule
-        mr = startElement.getAr();
+        mr = startElement.getAr()+ElementReference.electrons.get(startElement.getSymbol());
 
         if (!startElement.isElement("C")&&!startElement.isElement(null)){ // non carbon elements are added to a new funcGroup
             groupList.add(new FuncGroup(startElement));
@@ -119,7 +118,7 @@ public class Molecule {
 
         this.getElementList().addAll(molecule.getElementList());
         this.getGroupList().addAll(molecule.getGroupList());
-        this.setMr(this.getMr()+molecule.getMr());
+        this.setMr(this.getMr()+molecule.getMr()-2);
         for (int i = 0; i < molecule.getElementList().size(); i++) {
             molecule.getElementList().get(i).setMolecule(this);
         }
@@ -141,8 +140,8 @@ public class Molecule {
         return null;
     }
 
-    public void updateMass(String symbol){
-        this.setMr(this.getMr()+ ElementReference.atomicMass.get(symbol));
+    public void updateMass(String symbol,int bondtype){
+        this.setMr(this.getMr()+ ElementReference.atomicMass.get(symbol)+ElementReference.electrons.get(symbol)-2*bondtype);
     }
 
     public void nameMolecule() {
