@@ -2,12 +2,9 @@ package UI.Tools;
 
 import Construction.Bond;
 import Construction.Element;
-import Construction.ElementReference;
 import Construction.Molecule;
-import UI.MainWindow;
-import UI.Workspace;
+import UI.Other.Workspace;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -35,6 +32,7 @@ public class Deleter extends Tool{
 
     @Override
     public void onEmptyClick(MouseEvent e) {
+        getWorkspace().setMolecules(new ArrayList<>());
         for(Component component:getWorkspace().getComponents()){
             getWorkspace().remove(component);
         }

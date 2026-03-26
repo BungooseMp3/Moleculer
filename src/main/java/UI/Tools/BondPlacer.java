@@ -2,12 +2,9 @@ package UI.Tools;
 
 import Construction.Bond;
 import Construction.Element;
-import Construction.FuncGroup;
-import Construction.Molecule;
-import UI.Workspace;
+import UI.Other.Workspace;
 
 import java.awt.event.MouseEvent;
-import java.util.Objects;
 
 public class BondPlacer extends Tool {
     public int getCurrentBondType() {
@@ -50,13 +47,6 @@ public class BondPlacer extends Tool {
 
     @Override
     public void onEmptyClick(MouseEvent e) {
-        for (FuncGroup group : selectedElements[0].getMolecule().getGroupList()) {
-            System.out.println("group");
-            for(Element element: group.getContainedElements()){
-                System.out.println(element.getSymbol());
-            }
-        }
-
         selectedElements[0] = null;
         selectedElements[1] = null;
     }

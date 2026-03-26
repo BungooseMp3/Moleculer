@@ -1,7 +1,7 @@
 package UI.UIButtons.Halogens;
 
-import UI.RoundedPanel;
-import UI.Workspace;
+import UI.Other.RoundedPanel;
+import UI.Other.Workspace;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

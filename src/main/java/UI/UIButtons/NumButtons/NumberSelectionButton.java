@@ -1,8 +1,7 @@
 package UI.UIButtons.NumButtons;
 
-import UI.UIButtons.ButtonTemplate;
 import UI.UIButtons.TextButton;
-import UI.Workspace;
+import UI.Other.Workspace;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

@@ -1,8 +1,7 @@
 package UI.UIButtons;
 
-import UI.LeftBar.Toolbar;
 import UI.Tools.BondPlacer;
-import UI.Workspace;
+import UI.Other.Workspace;
 
 import java.awt.*;
 

@@ -1,9 +1,7 @@
 package UI.UIButtons.NumButtons;
 
-import UI.RoundedPanel;
-import UI.Workspace;
+import UI.Other.RoundedPanel;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class SelectionButtonWrapper extends RoundedPanel {

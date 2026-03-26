@@ -1,6 +1,6 @@
 package UI.LeftBar;
 
-import UI.Workspace;
+import UI.Other.Workspace;
 
 import javax.swing.*;
 import java.awt.*;

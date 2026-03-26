@@ -1,7 +1,7 @@
 package Construction;
 
-import UI.MoleculeComponent;
-import UI.Workspace;
+import UI.Other.MoleculeComponent;
+import UI.Other.Workspace;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

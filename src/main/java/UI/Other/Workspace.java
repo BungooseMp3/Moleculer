@@ -1,6 +1,5 @@
-package UI;
+package UI.Other;
 
-import Construction.Element;
 import Construction.Molecule;
 import UI.BottomBar.GreyBar;
 import UI.Tools.Tool;
@@ -54,7 +53,7 @@ public class Workspace extends JPanel {
     private GreyBar greyBar;
 
     public void addNewMolecule(String symbol, int x, int y){
-        this.getMolecules().add(new Molecule(symbol,this, new Point(x-30,y-30)));//adds a new molecule with start element indicated by the symbol
+        this.getMolecules().add(new Molecule(symbol,this, new Point(x-30,y)));//adds a new molecule with start element indicated by the symbol
     }
 
     public Workspace(GreyBar greyBar,MainWindow mainWindow) {

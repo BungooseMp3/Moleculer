@@ -2,8 +2,7 @@ package UI.Tools;
 
 import Construction.Bond;
 import Construction.Element;
-import Construction.Molecule;
-import UI.Workspace;
+import UI.Other.Workspace;
 
 import java.awt.event.MouseEvent;
 

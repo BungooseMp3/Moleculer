@@ -1,7 +1,7 @@
 package Construction;
 
-import UI.MoleculeName;
-import UI.Workspace;
+import UI.Other.MoleculeName;
+import UI.Other.Workspace;
 
 import java.awt.*;
 import java.util.*;
@@ -86,12 +86,12 @@ public class Molecule {
 
         groupList = new ArrayList<FuncGroup>();
         elementList = new ArrayList<Element>();
-        Element startElement = new Element(startElementID, workspace, pos,1,this);//a new element is made using the specified ID
+        Element startElement = new Element(startElementID, workspace, pos,1,this);
         startElement.setLocation(pos);
-        elementList.add(startElement); // the new element is added to the molecule
+        elementList.add(startElement);
         mr = startElement.getAr()+ElementReference.electrons.get(startElement.getSymbol());
 
-        if (!startElement.isElement("C")&&!startElement.isElement(null)){ // non carbon elements are added to a new funcGroup
+        if (!startElement.isElement("C")&&!startElement.isElement(null)){
             groupList.add(new FuncGroup(startElement));
         }
 
@@ -145,6 +145,7 @@ public class Molecule {
     }
 
     public void nameMolecule() {
+        this.setName("");
         this.consolidateGroups();
         this.setPriorityGroup(this.findPriorityGroup());
         this.findPriorityChains();
@@ -224,7 +225,7 @@ public class Molecule {
                     break;
                 }
             }
-        } else if (this.getPriorityGroup().getGroupName().equals("alkene")){
+        } else if (this.getPriorityGroup().getGroupName().equals("alkene")||this.getPriorityGroup().getGroupName().equals("alkyne")){
             Stack<Element> chain = depthFirstSearch(getPriorityGroup().getAttachedCarbons().getFirst(),new ArrayList<>(),new Stack<>(),new Stack<>(),50,50);
             chainlist.add(new Chain(depthFirstSearch(chain.getLast(),new ArrayList<>(),new Stack<>(),new Stack<>(),50,50),this.priorityGroup));
 

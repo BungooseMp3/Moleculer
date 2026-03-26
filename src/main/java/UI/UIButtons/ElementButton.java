@@ -1,8 +1,7 @@
 package UI.UIButtons;
 
-import UI.LeftBar.Toolbar;
 import UI.Tools.ElementPlacer;
-import UI.Workspace;
+import UI.Other.Workspace;
 import java.awt.*;
 
 public class ElementButton extends TextButton{

@@ -1,9 +1,8 @@
 package UI.UIButtons;
 
 import UI.Tools.Deleter;
-import UI.Workspace;
+import UI.Other.Workspace;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class DeletionButton extends ButtonTemplate {

@@ -1,11 +1,6 @@
-import Construction.Element;
-import Construction.Molecule;
-import UI.MainWindow;
-import UI.MoleculeComponent;
-import UI.Workspace;
+import UI.Other.MainWindow;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {

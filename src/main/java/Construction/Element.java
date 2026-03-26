@@ -1,7 +1,7 @@
 package Construction;
 
-import UI.MoleculeComponent;
-import UI.Workspace;
+import UI.Other.MoleculeComponent;
+import UI.Other.Workspace;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,17 +51,17 @@ public class Element extends MoleculeComponent {
     private ArrayList<FuncGroup> groups;
 
     public Element(String symbol, Workspace workspace, Point pos, int orientation, Molecule molecule) {
-        bonds = new Bond[getBondNum(symbol)]; // sets bonds to the correct size based on element input
+        bonds = new Bond[getBondNum(symbol)];
         this.symbol = symbol;
         this.orientation = orientation;
         ar = getArVal(symbol);
-        this.initComponent(workspace, new Rectangle(pos.x, pos.y, elementWidth, elementHeight), molecule);// initialises the component
+        this.initComponent(workspace, new Rectangle(pos.x, pos.y, elementWidth, elementHeight), molecule);
         center = this.getLocation();
         center.x += elementWidth / 2;
         center.y += elementHeight / 2;
 
-        for (int i = 0; i < bonds.length; i++) { // iterates through bonds
-            bonds[i] = new Bond(this, null, 1, workspace, getMolecule()); // makes a new bond connecting the current element and a null element
+        for (int i = 0; i < bonds.length; i++) {
+            bonds[i] = new Bond(this, null, 1, workspace, getMolecule());
         }
     }
 
@@ -152,15 +152,15 @@ public class Element extends MoleculeComponent {
      * @return returns true if the symbol of <code>this</code> is the same as the input, false otherwise
      */
     public boolean isElement(String symbol) {
-        return (Objects.equals(this.getSymbol(), symbol)); // returns true if element symbols are the same
+        return (Objects.equals(this.getSymbol(), symbol));
     }
 
     public void mouseClick(MouseEvent e) {
-        getWorkspace().getCurrentTool().onElementClick(e, this); // calls the relevant element clicked function of the current tool
+        getWorkspace().getCurrentTool().onElementClick(e, this);
     }
 
     @Override
-    protected void paintComponent(Graphics g) { // handles the drawing of the element
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -224,11 +224,11 @@ public class Element extends MoleculeComponent {
 
     public void joinElements(Element targetNode) {
 
-        Bond currentBond = this.getFirstFreeBond();//finds the first available bond
+        Bond currentBond = this.getFirstFreeBond();
         currentBond.setBondType(1);
-        currentBond.setConnectedElement(0, this); //sets the first node in the bond to the element this method is called on
-        currentBond.setConnectedElement(1, targetNode);// sets the other node to the input target node
-        targetNode.getBonds()[targetNode.getFirstFreeBondPos()] = currentBond; // updates the target node's bond list so they share a bond
+        currentBond.setConnectedElement(0, this);
+        currentBond.setConnectedElement(1, targetNode);
+        targetNode.getBonds()[targetNode.getFirstFreeBondPos()] = currentBond;
 
         if (targetNode.getMolecule() != this.getMolecule()) {
             this.getMolecule().joinMolecules(targetNode.getMolecule());
@@ -244,7 +244,7 @@ public class Element extends MoleculeComponent {
     }
 
     private int getFirstFreeBondPos() {
-        for (int i = 0; i < this.getBonds().length; i++) { // iterates through the chosen element's bond list to find the first bond with an empty element
+        for (int i = 0; i < this.getBonds().length; i++) {
             if (this.getBonds()[i].isEmpty()) {
                 return i;
             }
@@ -257,7 +257,7 @@ public class Element extends MoleculeComponent {
      * @return returns the first empty bond
      */
     public Bond getFirstFreeBond() {
-        for (int i = 0; i < this.getBonds().length; i++) { // iterates through the chosen element's bond list to find the first bond with an empty element
+        for (int i = 0; i < this.getBonds().length; i++) {
             if (this.getBonds()[i].isEmpty()) {
                 return this.getBonds()[i];
             }
@@ -318,21 +318,6 @@ public class Element extends MoleculeComponent {
     }
 
     public static void groupUpdate(Element[] elements) {
-        /*if(this.isElement("C")){
-            if(!newElement.isElement("C")){
-                FuncGroup newGroup = new FuncGroup(newElement);
-                newGroup.addAttachedCarbon(this);
-                this.getMolecule().addFuncGroup(newGroup);
-            }
-        } else {
-            FuncGroup currentGroup = this.getMolecule().findGroupWith(this);
-            if(newElement.isElement("C")){
-                currentGroup.addAttachedCarbon(newElement);
-            } else {
-                currentGroup.addContainedElement(this);
-            }
-        }*/
-
         if (!(elements[0].isElement("C") && elements[1].isElement("C"))) {
             for (Element currentElement : elements) {
                 FuncGroup group = currentElement.getMolecule().findGroupWith(currentElement);

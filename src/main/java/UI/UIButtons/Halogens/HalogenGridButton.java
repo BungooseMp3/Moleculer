@@ -2,7 +2,7 @@ package UI.UIButtons.Halogens;
 
 import UI.Tools.ElementPlacer;
 import UI.UIButtons.TextButton;
-import UI.Workspace;
+import UI.Other.Workspace;
 
 import java.awt.*;
 

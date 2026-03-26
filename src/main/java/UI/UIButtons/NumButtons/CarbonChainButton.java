@@ -1,11 +1,7 @@
 package UI.UIButtons.NumButtons;
 
-import UI.LeftBar.Toolbar;
-import UI.Tools.BondPlacer;
 import UI.Tools.CarbonChainPlacer;
-import UI.Workspace;
-
-import java.awt.*;
+import UI.Other.Workspace;
 
 
 public class CarbonChainButton extends NumberSelectionButton{

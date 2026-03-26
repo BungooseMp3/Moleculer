@@ -1,6 +1,6 @@
 package UI.UIButtons.NumButtons;
 
-import UI.Workspace;
+import UI.Other.Workspace;
 
 import java.awt.*;
 

@@ -1,6 +1,6 @@
 package UI.UIButtons;
 
-import UI.Workspace;
+import UI.Other.Workspace;
 
 import java.awt.*;
 

@@ -1,8 +1,7 @@
 package UI.UIButtons;
 
-import UI.Tools.CarbonylPlacer;
 import UI.Tools.CarboxylPlacer;
-import UI.Workspace;
+import UI.Other.Workspace;
 
 public class CarboxylButton extends TextButton{
 

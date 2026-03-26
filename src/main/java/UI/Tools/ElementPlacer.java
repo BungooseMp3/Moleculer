@@ -1,8 +1,7 @@
 package UI.Tools;
 import Construction.Bond;
 import Construction.Element;
-import Construction.ElementReference;
-import UI.Workspace;
+import UI.Other.Workspace;
 
 import java.awt.event.MouseEvent;
 
@@ -27,8 +26,6 @@ public class ElementPlacer extends Tool {
     public void onElementClick(MouseEvent e, Element element) {
         if (element.hasFreeBonds(1) && element.getOccupiedBondNum()<3){
             element.getMolecule().addNewNode(element,this.elementSymbol,element.calcNextPos(),1);
-        } else {
-            System.out.println("no free spaces");
         }
         element.getWorkspace().repaint();
     }

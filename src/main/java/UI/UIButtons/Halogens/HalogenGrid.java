@@ -1,14 +1,9 @@
 package UI.UIButtons.Halogens;
 
-import UI.GridTemplate;
-import UI.RoundedPanel;
-import UI.Workspace;
+import UI.Other.GridTemplate;
+import UI.Other.Workspace;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 public class HalogenGrid extends GridTemplate {
     public HalogenMenu getMenu() {

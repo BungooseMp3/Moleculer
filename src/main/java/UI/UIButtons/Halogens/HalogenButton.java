@@ -1,14 +1,10 @@
 package UI.UIButtons.Halogens;
 
-import UI.GridTemplate;
-import UI.RoundedPanel;
 import UI.Tools.ElementPlacer;
 import UI.UIButtons.TextButton;
-import UI.Workspace;
+import UI.Other.Workspace;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class HalogenButton extends TextButton {
     String text = "X";
