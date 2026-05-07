@@ -17,6 +17,7 @@ public class Molecule {
     private ArrayList<Chain> priorityChainList;
     private FuncGroup priorityGroup;
     private ArrayList<FuncGroup> groupList;
+    private MoleculeName moleculeName;
 
     public Workspace getWorkspace() {
         return workspace;
@@ -161,9 +162,12 @@ public class Molecule {
 
         }
 
-        if(!this.getName().isEmpty()){
-            workspace.add(new MoleculeName(this));
+        if(Objects.isNull(this.moleculeName)){
+            moleculeName = new MoleculeName(this);
+            workspace.add(moleculeName);
             workspace.repaint();
+        } else {
+            moleculeName.repaint();
         }
 
     }
